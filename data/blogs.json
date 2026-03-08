@@ -1,0 +1,89 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Getting Started with Next.js 16",
+      "slug": "getting-started-nextjs-16",
+      "excerpt": "Learn how to build modern web applications with Next.js 16 and its new features.",
+      "content": "Next.js 16 brings exciting new features including improved server actions, better performance, and enhanced developer experience. In this blog post, we'll explore how to get started with the latest version.",
+      "coverImage": "/blog/nextjs.jpg",
+      "author": "Santosh",
+      "category": "Development",
+      "tags": [
+        "Next.js",
+        "React",
+        "Web Development"
+      ],
+      "publishedAt": "2024-01-15T10:00:00Z",
+      "createdAt": "2024-01-15T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Building Beautiful UIs with Tailwind CSS",
+      "slug": "beautiful-uis-tailwind-css",
+      "excerpt": "Discover how to create stunning user interfaces using Tailwind CSS framework.",
+      "content": "Tailwind CSS has revolutionized the way we build user interfaces. Its utility-first approach makes it easy to create beautiful, responsive designs without writing custom CSS.",
+      "coverImage": "/blog/tailwind.jpg",
+      "author": "Santosh",
+      "category": "Design",
+      "tags": [
+        "Tailwind CSS",
+        "UI/UX",
+        "Design"
+      ],
+      "publishedAt": "2024-01-20T14:30:00Z",
+      "createdAt": "2024-01-20T14:30:00Z"
+    },
+    {
+      "id": "3",
+      "title": "Mastering TypeScript for React Development",
+      "slug": "mastering-typescript-react",
+      "excerpt": "A comprehensive guide to using TypeScript with React for type-safe applications.",
+      "content": "TypeScript has become essential for building robust React applications. Learn how to leverage TypeScript's type system to catch errors early and improve code maintainability.",
+      "coverImage": "/blog/typescript.jpg",
+      "author": "Santosh",
+      "category": "Development",
+      "tags": [
+        "TypeScript",
+        "React",
+        "Programming"
+      ],
+      "publishedAt": "2024-02-05T09:00:00Z",
+      "createdAt": "2024-02-05T09:00:00Z"
+    },
+    {
+      "id": "mmgr1kmddp96nijdbar",
+      "title": "Jjj",
+      "slug": "jjj",
+      "excerpt": "Jj",
+      "content": "Jjj",
+      "coverImage": "/blog/default.jpg",
+      "author": "Santosh",
+      "category": "Development",
+      "tags": [
+        "Jjj"
+      ],
+      "publishedAt": "2026-03-07T20:01:43.333Z",
+      "createdAt": "2026-03-07T20:01:43.333Z"
+    },
+    {
+      "id": "mmhydbg97zwq4rh5rd",
+      "title": "tttt",
+      "slug": "tttt",
+      "excerpt": "ggg",
+      "content": "hhhh",
+      "coverImage": "/blog/default.jpg",
+      "author": "Santosh",
+      "category": "Technology",
+      "tags": [
+        "hhh"
+      ],
+      "publishedAt": "2026-03-08T16:14:34.809Z",
+      "createdAt": "2026-03-08T16:14:34.809Z"
+    }
+  ],
+  "admin": {
+    "username": "admin",
+    "passwordHash": "$2b$10$Gy67Y4clyote9bmmjwJUs.OuKH1G2iZCyJnR.YuplSMw8M7bPMR3i"
+  }
+}

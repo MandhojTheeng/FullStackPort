@@ -1,0 +1,281 @@
+{
+  "hero": {
+    "greeting": "Hi, I'm",
+    "title": "Santosh Timalsina",
+    "subtitle": "Full Stack Developer & Creative Designer",
+    "description": "I build amazing digital experiences with modern technologies. Let me help you create something great!",
+    "ctaPrimary": "View My Work",
+    "ctaSecondary": "Contact Me",
+    "ctaPrimaryLink": "#projects",
+    "ctaSecondaryLink": "#contact",
+    "image": "/profile.jpg",
+    "stats": [
+      {
+        "value": "5+",
+        "label": "Years Exp."
+      },
+      {
+        "value": "25+",
+        "label": "Projects"
+      },
+      {
+        "value": "15+",
+        "label": "Clients"
+      }
+    ],
+    "socialLinks": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com",
+        "icon": "github"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://linkedin.com",
+        "icon": "linkedin"
+      },
+      {
+        "name": "Twitter",
+        "url": "https://twitter.com",
+        "icon": "twitter"
+      }
+    ]
+  },
+  "about": {
+    "title": "Passiona",
+    "subtitle": "About me",
+    "bio": [
+      "I'm a passionate full-stack developer with expertise in building modern web applications. I specialize in creating seamless user experiences with React, Next.js, and TypeScrip",
+      "With years of experience in the field, I combine my professional knowledge with creative problem-solving to deliver exceptional results.",
+      "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."
+    ],
+    "skills": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "Python",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "MongoDB",
+      "GraphQL",
+      "AWS"
+    ],
+    "stats": [
+      {
+        "value": "3+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "20+",
+        "label": "Projects Completed"
+      },
+      {
+        "value": "10+",
+        "label": "Happy"
+      },
+      {
+        "value": "0",
+        "label": ""
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "E-Commerce Platform",
+      "description": "A full-featured online store with cart functionality, payment integration, and admin dashboard.",
+      "tech": [
+        "Next.js",
+        "TypeScript",
+        "Stripe",
+        "PostgreSQL"
+      ],
+      "link": "#",
+      "featured": true,
+      "image": ""
+    },
+    {
+      "id": 2,
+      "title": "SaaS Dashboard",
+      "description": "Analytics dashboard with real-time data visualization, user management, and reporting tools.",
+      "tech": [
+        "React",
+        "D3.js",
+        "Node.js",
+        "MongoDB"
+      ],
+      "link": "#",
+      "featured": true,
+      "image": ""
+    },
+    {
+      "id": 3,
+      "title": "Portfolio Generator",
+      "description": "Tool that helps developers create beautiful portfolio websites with customizable themes.",
+      "tech": [
+        "Next.js",
+        "Tailwind CSS",
+        "Prisma"
+      ],
+      "link": "#",
+      "featured": false,
+      "image": ""
+    },
+    {
+      "id": 4,
+      "title": "Task Management App",
+      "description": "Collaborative project management tool with real-time updates and team workspaces.",
+      "tech": [
+        "React",
+        "Firebase",
+        "Redux"
+      ],
+      "link": "#",
+      "featured": false,
+      "image": ""
+    },
+    {
+      "id": 5,
+      "title": "Weather Application",
+      "description": "Beautiful weather app with location-based forecasts and interactive maps.",
+      "tech": [
+        "React",
+        "OpenWeather API",
+        "Leaflet"
+      ],
+      "link": "#",
+      "featured": false,
+      "image": ""
+    },
+    {
+      "id": 6,
+      "title": "Blog Platform",
+      "description": "Content management system for bloggers with markdown support and SEO optimization.",
+      "tech": [
+        "Next.js",
+        "MDX",
+        "Vercel"
+      ],
+      "link": "#",
+      "featured": false,
+      "image": ""
+    }
+  ],
+  "contact": {
+    "email": "timalsinasantosh19@gmail.com",
+    "phone": "+977 9843385766",
+    "location": "Kathmandu, Nepal",
+    "socialLinks": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com",
+        "icon": "custom"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://linkedin.com",
+        "icon": "custom"
+      },
+      {
+        "name": "Twitter",
+        "url": "",
+        "icon": "custom"
+      }
+    ]
+  },
+  "footer": {
+    "brand": {
+      "name": "Santosh",
+      "tagline": "Full Stack"
+    },
+    "description": "Full Stack Developer & UI/UX Designer based in Kathmandu, Nepal. Building exceptional digital experiences with modern technologies",
+    "quickLinks": [
+      {
+        "name": "About",
+        "href": "#about"
+      },
+      {
+        "name": "Contact",
+        "href": "#contact"
+      }
+    ],
+    "builtWith": [
+      "Next.js",
+      "Tailwind CSS"
+    ],
+    "copyright": "© {year} Santosh. All rights"
+  },
+  "messages": [
+    {
+      "id": "mmgq3efnbndlfoey0q4",
+      "name": "santosh",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "hyyyy",
+      "createdAt": "2026-03-07T19:35:09.011Z"
+    },
+    {
+      "id": "mmgqvmpdf3077oz7kkb",
+      "name": "santosh",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "1111",
+      "createdAt": "2026-03-07T19:57:06.097Z"
+    },
+    {
+      "id": "mmgqz7fwqygtyffenu",
+      "name": "तिमल्सिना",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "hhhh",
+      "createdAt": "2026-03-07T19:59:52.940Z"
+    },
+    {
+      "id": "mmgr2pabn79rfrlgwv",
+      "name": "तिमल्सिना",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "jjj",
+      "createdAt": "2026-03-07T20:02:36.035Z"
+    },
+    {
+      "id": "mmgr3ahjyzylwe0nuom",
+      "name": "Test User",
+      "email": "test@example.com",
+      "message": "This is a test message",
+      "createdAt": "2026-03-07T20:03:03.511Z"
+    },
+    {
+      "id": "mmgr3do8mb54bszue1m",
+      "name": "fff",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "hhhh",
+      "createdAt": "2026-03-07T20:03:07.640Z"
+    },
+    {
+      "id": "mmgr3yuue61i57rhc44",
+      "name": "तिमल्सिना",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "ggg",
+      "createdAt": "2026-03-07T20:03:35.094Z"
+    },
+    {
+      "id": "mmgrbt7m6qerpduscn3",
+      "name": "तिमल्सिना",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "jjj",
+      "createdAt": "2026-03-07T20:09:41.026Z"
+    },
+    {
+      "id": "mmgreljysd9l46lrqm",
+      "name": "तिमल्सिना",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "jjj",
+      "createdAt": "2026-03-07T20:11:51.070Z"
+    },
+    {
+      "id": "mmhyfp5kcguhr5q014g",
+      "name": "santish",
+      "email": "timalsinasantosh19@gmail.com",
+      "message": "hhhhhhhhhh",
+      "createdAt": "2026-03-08T16:16:25.880Z"
+    }
+  ]
+}
