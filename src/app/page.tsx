@@ -5,6 +5,7 @@ import Projects from "../components/Projects";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import AIChat from "../components/AIChat";
+import BlogPage from "./blog/page";
 
 export default function Home() {
   return (
@@ -20,6 +21,8 @@ export default function Home() {
       
       {/* Projects Section */}
       <Projects />
+
+      <BlogPage/>
       
       {/* Contact Section */}
       <Contact />

@@ -1,132 +1,152 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import React from "react";
 
-// Fetch blog posts from API
-async function getBlogPosts() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/blog`, {
-      cache: 'no-store'
-    });
-    
-    if (!res.ok) {
-      return [];
-    }
-    
-    const data = await res.json();
-    return data.posts || [];
-  } catch (error) {
-    console.error("Failed to fetch blog posts:", error);
-    return [];
+const FALLBACK_POSTS = [
+  {
+    id: 1,
+    title: "Architecting Scalable Microservices with Next.js 15",
+    excerpt: "How I approach building production-ready systems that handle high traffic while maintaining 99.9% uptime.",
+    category: "Architecture",
+    publishedAt: "2026-03-01",
+    slug: "scalable-nextjs-architecture",
+    tags: ["Next.js", "Backend", "Scalability"]
+  },
+  {
+    id: 2,
+    title: "The IT Officer's Playbook: Managing Digital Infrastructure",
+    excerpt: "Insights from my role at Glocal Pvt. Ltd. on optimizing internal workflows and securing organizational data.",
+    category: "Management",
+    publishedAt: "2026-02-15",
+    slug: "it-management-playbook",
+    tags: ["IT Operations", "Security", "Leadership"]
+  },
+  {
+    id: 3,
+    title: "Why I Switched to Gemini 3.0 for AI-Driven Development",
+    excerpt: "Exploring the integration of advanced LLMs into the modern development workflow to speed up delivery.",
+    category: "AI",
+    publishedAt: "2026-02-10",
+    slug: "ai-driven-development",
+    tags: ["AI", "Gemini", "Productivity"]
+  },
+  {
+    id: 4,
+    title: "Modern Database Design: PostgreSQL vs. NoSQL in 2026",
+    excerpt: "A deep dive into choosing the right data layer for full-stack applications based on my recent architectural projects.",
+    category: "Database",
+    publishedAt: "2026-01-20",
+    slug: "database-design-2026",
+    tags: ["PostgreSQL", "Data", "Architecture"]
   }
-}
+];
 
-export default async function BlogPage() {
-  const posts = await getBlogPosts();
+export default function BlogPage() {
+  const posts = FALLBACK_POSTS; // In production, keep your fetch logic here
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen bg-white text-black pt-24 pb-16">
-        {/* Header */}
-        <section className="py-16 bg-gradient-to-b from-gray-100 to-white">
-          <div className="container-custom">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
-                My <span className="gradient-text-subtle">Blog</span>
-              </h1>
-              <p className="text-lg text-black">
-                Sharing thoughts on development, design, and technology
+    <main className="min-h-screen bg-[#050505] text-white selection:bg-green-500 selection:text-black font-sans antialiased overflow-x-hidden relative">
+      
+      {/* 0. DATA GRID OVERLAY (Matching Hero) */}
+      <div className="fixed inset-0 opacity-[0.05] pointer-events-none z-0" 
+           style={{ backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
+
+      <div className="relative z-10 pt-32 pb-20 px-6 md:px-12 max-w-[1600px] mx-auto">
+        
+        {/* 1. BLOG HEADER */}
+        <header className="mb-20">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-[10vw] font-[1000] leading-[0.8] tracking-[-0.07em] uppercase">
+              THE <span className="text-transparent stroke-text">BLOG</span>
+            </h1>
+            <div className="mt-8 flex flex-col md:flex-row gap-8 items-start">
+              <div className="h-[1px] w-24 bg-green-500 mt-3 hidden md:block" />
+              <p className="text-sm font-bold opacity-50 max-w-xl leading-relaxed lowercase font-mono">
+                Technical post-mortems, architectural blueprints, and engineering leadership.
               </p>
+            </div>
+          </motion.div>
+        </header>
+
+        {/* 2. BLOG GRID */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 border-t border-white/10">
+          {/* Left Sidebar Info */}
+          <div className="lg:col-span-3 border-r border-white/10 p-6 hidden lg:block font-mono text-[10px] space-y-8">
+            <div>
+              <h4 className="text-green-500 mb-4 font-black tracking-widest">CATEGORIES</h4>
+              <ul className="space-y-2 opacity-60">
+                <li>01_ARCHITECTURE</li>
+                <li>02_INFRASTRUCTURE</li>
+                <li>03_PRODUCTIVITY</li>
+                <li>04_AI_LOGS</li>
+              </ul>
+            </div>
+          
+          </div>
+
+          {/* Main Feed */}
+          <div className="lg:col-span-9">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {posts.map((post, idx) => (
+                <motion.article 
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group relative border-b border-white/10 md:border-r p-8 lg:p-12 hover:bg-white/[0.02] transition-colors flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-center mb-10 font-mono text-[10px]">
+                      <span className="text-green-500 tracking-[0.3em] font-black uppercase">
+                        [{post.category}]
+                      </span>
+                      <span className="opacity-30 tracking-widest">{post.publishedAt}</span>
+                    </div>
+
+                    <h2 className="text-3xl font-black leading-none tracking-tight mb-6 uppercase group-hover:text-green-500 transition-colors">
+                      {post.title}
+                    </h2>
+
+                    <p className="text-sm opacity-50 lowercase font-medium mb-8 leading-relaxed max-w-md">
+                      {post.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.map(tag => (
+                        <span key={tag} className="text-[9px] font-mono border border-white/20 px-2 py-0.5 rounded-full opacity-40 group-hover:opacity-100 transition-opacity">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <Link 
+                      href={`/blog/${post.slug}`}
+                      className="inline-flex items-center gap-4 text-[11px] font-black tracking-[0.4em] uppercase group-hover:gap-6 transition-all"
+                    >
+                      READ MORE<span className="text-green-500">→</span>
+                    </Link>
+                  </div>
+                </motion.article>
+              ))}
             </div>
           </div>
         </section>
+      </div>
 
-        {/* Blog Posts Grid */}
-        <section className="py-16">
-          <div className="container-custom">
-            {posts.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-black mb-2">No blog posts yet</h3>
-                <p className="text-black">Check back soon for new content!</p>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.map((post: any) => (
-                  <article
-                    key={post.id}
-                    className="group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  >
-                    {/* Cover Image */}
-                    <div className="relative h-48 bg-gradient-to-br from-blue-600 to-cyan-500 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 text-xs font-medium text-white bg-white/20 backdrop-blur-sm rounded-full">
-                          {post.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      {/* Date */}
-                      <p className="text-sm text-black mb-2">
-                        {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
-
-                      {/* Title */}
-                      <h2 className="text-xl font-bold text-black mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
-
-                      {/* Excerpt */}
-                      <p className="text-black text-sm mb-4 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-
-                      {/* Tags */}
-                      {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {post.tags.slice(0, 3).map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-1 text-xs text-black bg-gray-100 rounded-full"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Read More */}
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                      >
-                        Read More
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      <style jsx>{`
+        .stroke-text {
+          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.2);
+        }
+      `}</style>
+    </main>
   );
 }
-

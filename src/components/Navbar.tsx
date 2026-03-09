@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,198 +14,176 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-      
-      // Detect active section
-      const sections = ["about", "projects", "contact"];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 200 && rect.bottom >= 200) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-lg shadow-sm py-3"
-            : "bg-transparent py-5"
-        }`}
+      <motion.nav
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="fixed inset-x-0 top-0 z-[100] px-4 sm:px-6 lg:px-8 pt-4"
       >
-        <div className="container-custom">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-shadow duration-300">
-                S
+        <div
+          className={`mx-auto max-w-7xl rounded-2xl border transition-all duration-500 ${
+            scrolled
+              ? "border-white/10 bg-black/55 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+              : "border-white/8 bg-white/[0.03] backdrop-blur-md"
+          }`}
+        >
+          <div className="flex items-center justify-between px-5 sm:px-6 lg:px-8 h-[72px]">
+            {/* Brand */}
+            <Link href="/" className="group flex items-center gap-3 min-w-fit">
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] shadow-inner shadow-white/5">
+                <span className="text-sm font-semibold tracking-tight text-white">
+                  ST
+                </span>
+                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/5" />
               </div>
-              <div className="hidden sm:block">
-                <span className="text-lg font-bold text-zinc-900 block group-hover:text-blue-600 transition-colors">
+
+              <div className="flex flex-col leading-none">
+                <span className="text-[13px] font-semibold tracking-[0.22em] text-white uppercase">
                   Santosh
                 </span>
-                <span className="text-xs text-zinc-500 -mt-0.5 block">Full Stack Developer</span>
+                <span className="mt-1 text-[11px] tracking-[0.22em] text-white/45 uppercase">
+                  Timalsina
+                </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.slice(1);
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                      isActive
-                        ? "text-blue-600"
-                        : "text-zinc-600 hover:text-blue-600"
-                    }`}
-                  >
+            {/* Desktop Nav */}
+            <div className="hidden lg:flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1.5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="group relative rounded-full px-5 py-2.5"
+                >
+                  <span className="relative z-10 text-[12px] font-medium tracking-[0.18em] uppercase text-white/65 transition-colors duration-300 group-hover:text-white">
                     {link.name}
-                    {/* Simple underline indicator */}
-                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-blue-600 rounded-full transition-all duration-300 ${
-                      isActive ? "w-6" : "w-0"
-                    }`} />
-                  </Link>
-                );
-              })}
+                  </span>
+                  <span className="absolute inset-0 rounded-full bg-white/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                </Link>
+              ))}
             </div>
 
-            {/* Right Side - CTA & Mobile Toggle */}
+            {/* Right */}
             <div className="flex items-center gap-3">
-              {/* Admin Login Icon */}
-              <Link 
-                href="/admin/login" 
-                className="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl hover:bg-zinc-100 text-zinc-600 hover:text-blue-600 transition-colors"
-                aria-label="Admin Login"
+              <Link
+                href="#contact"
+                className="hidden sm:inline-flex items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400 px-5 py-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:scale-[1.02] hover:bg-white"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                Hire Me
               </Link>
 
-              {/* Let's Talk Button */}
-              <Link 
-                href="#contact" 
-                className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white text-sm font-medium rounded-full hover:bg-zinc-800 transition-all duration-300 hover:shadow-lg hover:shadow-zinc-900/20"
-              >
-                Let&apos;s Talk
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-
-              {/* Mobile Menu Button */}
               <button
-                className="lg:hidden p-2.5 rounded-xl hover:bg-zinc-100 text-zinc-700 transition-colors"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle menu"
+                aria-label="Open menu"
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition-colors duration-300 hover:bg-white/[0.08]"
               >
-                {mobileMenuOpen ? (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
+                <div className="flex h-4 w-5 flex-col justify-between">
+                  <span className="block h-[2px] w-full rounded-full bg-white" />
+                  <span className="block h-[2px] w-3/4 self-end rounded-full bg-white/70" />
+                  <span className="block h-[2px] w-full rounded-full bg-white" />
+                </div>
               </button>
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-[70px] left-0 right-0 z-40 lg:hidden bg-white shadow-lg border-t border-zinc-100"
-          >
-            <div className="container-custom px-6 py-6 space-y-2">
-              {navLinks.map((link, index) => {
-                const isExternal = link.href.startsWith("/") && !link.href.startsWith("#");
-                const isActive = !isExternal && activeSection === link.href.slice(1);
-                return (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-[110] bg-black/70 backdrop-blur-sm"
+            />
+
+            <motion.div
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="fixed inset-x-4 top-4 z-[120] rounded-3xl border border-white/10 bg-[#0a0a0a]/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-5">
+                <div>
+                  <p className="text-[12px] font-medium tracking-[0.22em] uppercase text-white/40">
+                    Navigation
+                  </p>
+                  <p className="mt-1 text-white text-sm font-medium">
+                    Santosh Timalsina
+                  </p>
+                </div>
+
+                <button
+                  aria-label="Close menu"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition-colors duration-300 hover:bg-white/[0.08]"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="py-6 flex flex-col">
+                {navLinks.map((link, i) => (
                   <motion.div
                     key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06 }}
                   >
                     <Link
                       href={link.href}
-                      className={`block py-3 px-4 text-base font-medium rounded-xl transition-all ${
-                        isActive
-                          ? "text-blue-600 bg-blue-50"
-                          : "text-zinc-600 hover:text-blue-600 hover:bg-zinc-50"
-                      }`}
                       onClick={() => setMobileMenuOpen(false)}
+                      className="group flex items-center justify-between rounded-2xl px-4 py-4 transition-colors duration-300 hover:bg-white/[0.05]"
                     >
-                      {link.name}
+                      <span className="text-lg font-medium text-white transition-colors duration-300 group-hover:text-emerald-300">
+                        {link.name}
+                      </span>
+                      <span className="text-white/25 text-xl transition-transform duration-300 group-hover:translate-x-1">
+                        ↗
+                      </span>
                     </Link>
                   </motion.div>
-                );
-              })}
-              {/* Admin Icon for Mobile */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Link
-                  href="/admin/login"
-                  className="flex items-center gap-3 py-3 px-4 text-base font-medium rounded-xl text-zinc-600 hover:text-blue-600 hover:bg-zinc-50 transition-all"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Admin
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="pt-4"
-              >
+                ))}
+              </div>
+
+              <div className="border-t border-white/10 pt-5">
                 <Link
                   href="#contact"
-                  className="flex items-center justify-center gap-2 py-3.5 bg-zinc-900 text-white font-medium rounded-full"
                   onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:bg-white"
                 >
-                  Let&apos;s Talk
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+                  Hire Me
                 </Link>
-              </motion.div>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
   );
 }
-
