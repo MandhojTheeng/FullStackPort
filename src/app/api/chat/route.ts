@@ -1,14 +1,18 @@
 import {
-  GoogleGenerativeAI,
+  GoogleGenAI,
   HarmBlockThreshold,
   HarmCategory,
-} from "@google/generative-ai";
+} from "@google/genai";
 import { NextResponse } from "next/server";
 
-const MODEL_NAME = "gemini-flash-latest";
-const apiKey = process.env.GEMINI_API_KEY || "";
+export const runtime = "nodejs";
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const MODEL_NAME = "gemini-2.5-flash";
+const apiKey = process.env.GEMINI_API_KEY;
+
+const ai = new GoogleGenAI({
+  apiKey,
+});
 
 type ChatMessage = {
   role?: string;
@@ -45,12 +49,11 @@ function normalizeHistory(history: unknown): GeminiHistoryMessage[] {
 
       if (!role) return null;
 
-      const text =
-        cleanText(
-          Array.isArray(item.parts)
-            ? item.parts.map((p) => p?.text || "").join("\n")
-            : item.content
-        ) || "";
+      const text = cleanText(
+        Array.isArray(item.parts)
+          ? item.parts.map((p) => p?.text || "").join("\n")
+          : item.content
+      );
 
       if (!text) return null;
 
@@ -65,7 +68,17 @@ function normalizeHistory(history: unknown): GeminiHistoryMessage[] {
     mapped.shift();
   }
 
-  return mapped.slice(-MAX_HISTORY);
+  const merged: GeminiHistoryMessage[] = [];
+  for (const msg of mapped) {
+    const last = merged[merged.length - 1];
+    if (last && last.role === msg.role) {
+      last.parts[0].text += `\n\n${msg.parts[0].text}`;
+    } else {
+      merged.push(msg);
+    }
+  }
+
+  return merged.slice(-MAX_HISTORY);
 }
 
 function buildSystemPrompt() {
@@ -168,8 +181,13 @@ function getErrorMessage(error: unknown): string {
   }
 
   const message = error.message || "";
+  const lower = message.toLowerCase();
 
-  if (message.includes("429") || message.toLowerCase().includes("quota")) {
+  if (
+    message.includes("429") ||
+    lower.includes("quota") ||
+    lower.includes("rate limit")
+  ) {
     const retrySeconds = extractRetrySeconds(error);
 
     if (retrySeconds) {
@@ -179,15 +197,15 @@ function getErrorMessage(error: unknown): string {
     return "AI chat is temporarily unavailable because the usage limit has been reached. Please try again shortly.";
   }
 
-  if (message.includes("404")) {
+  if (message.includes("404") || lower.includes("not found")) {
     return "The AI model could not be found. Check the configured Gemini model name.";
   }
 
-  if (message.includes("API key") || message.includes("api key")) {
+  if (lower.includes("api key") || lower.includes("authentication")) {
     return "The Gemini API key is missing or invalid.";
   }
 
-  return message;
+  return message || "Unexpected server error.";
 }
 
 export async function POST(req: Request) {
@@ -240,45 +258,41 @@ export async function POST(req: Request) {
 
     const cleanHistory = normalizeHistory(body?.history);
 
-    const model = genAI.getGenerativeModel({
+    const chat = ai.chats.create({
       model: MODEL_NAME,
-      safetySettings: [
-        {
-          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-        {
-          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-        {
-          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-        {
-          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-      ],
-      generationConfig: {
+      history: cleanHistory,
+      config: {
+        systemInstruction: buildSystemPrompt(),
         temperature: 0.7,
         topP: 0.9,
         topK: 40,
         maxOutputTokens: 400,
-      },
-      systemInstruction: {
-        role: "system",
-        parts: [{ text: buildSystemPrompt() }],
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+        ],
       },
     });
 
-    const chat = model.startChat({
-      history: cleanHistory,
+    const response = await chat.sendMessage({
+      message,
     });
 
-    const result = await chat.sendMessage(message);
-    const response = await result.response;
-    const text = cleanText(response.text());
+    const text = cleanText(response.text);
 
     return NextResponse.json({
       ok: true,
@@ -293,7 +307,9 @@ export async function POST(req: Request) {
 
     const status =
       error instanceof Error &&
-      (error.message.includes("429") || error.message.toLowerCase().includes("quota"))
+      (error.message.includes("429") ||
+        error.message.toLowerCase().includes("quota") ||
+        error.message.toLowerCase().includes("rate limit"))
         ? 429
         : 500;
 

@@ -27,7 +27,6 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "";
     }
-
     return () => {
       document.body.style.overflow = "";
     };
@@ -44,25 +43,25 @@ export default function Navbar() {
         <div
           className={`mx-auto max-w-7xl rounded-2xl border transition-all duration-500 ${
             scrolled
-              ? "border-white/10 bg-black/55 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
-              : "border-white/8 bg-white/[0.03] backdrop-blur-md"
+              ? "border-white/10 bg-black/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+              : "border-white/10 bg-zinc-900/95 backdrop-blur-md shadow-lg"
           }`}
         >
           <div className="flex items-center justify-between px-5 sm:px-6 lg:px-8 h-[72px]">
             {/* Brand */}
             <Link href="/" className="group flex items-center gap-3 min-w-fit">
-              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] shadow-inner shadow-white/5">
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.08] shadow-inner shadow-white/5">
                 <span className="text-sm font-semibold tracking-tight text-white">
                   ST
                 </span>
-                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/5" />
+                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
               </div>
 
               <div className="flex flex-col leading-none">
                 <span className="text-[13px] font-semibold tracking-[0.22em] text-white uppercase">
                   Santosh
                 </span>
-                <span className="mt-1 text-[11px] tracking-[0.22em] text-white/45 uppercase">
+                <span className="mt-1 text-[11px] tracking-[0.22em] text-white/50 uppercase">
                   Timalsina
                 </span>
               </div>
@@ -76,10 +75,10 @@ export default function Navbar() {
                   href={link.href}
                   className="group relative rounded-full px-5 py-2.5"
                 >
-                  <span className="relative z-10 text-[12px] font-medium tracking-[0.18em] uppercase text-white/65 transition-colors duration-300 group-hover:text-white">
+                  <span className="relative z-10 text-[12px] font-medium tracking-[0.18em] uppercase text-white/70 transition-colors duration-300 group-hover:text-white">
                     {link.name}
                   </span>
-                  <span className="absolute inset-0 rounded-full bg-white/[0.06] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <span className="absolute inset-0 rounded-full bg-white/[0.08] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </Link>
               ))}
             </div>
@@ -88,7 +87,7 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <Link
                 href="#contact"
-                className="hidden sm:inline-flex items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400 px-5 py-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:scale-[1.02] hover:bg-white"
+                className="hidden sm:inline-flex items-center justify-center rounded-full bg-emerald-400 px-5 py-2.5 text-[11px] font-bold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:scale-[1.05] hover:bg-white shadow-[0_0_20px_rgba(52,211,153,0.3)]"
               >
                 Hire Me
               </Link>
@@ -96,7 +95,7 @@ export default function Navbar() {
               <button
                 aria-label="Open menu"
                 onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition-colors duration-300 hover:bg-white/[0.08]"
+                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.08] text-white transition-colors duration-300 hover:bg-white/[0.12]"
               >
                 <div className="flex h-4 w-5 flex-col justify-between">
                   <span className="block h-[2px] w-full rounded-full bg-white" />
@@ -118,7 +117,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-[110] bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-md"
             />
 
             <motion.div
@@ -126,7 +125,7 @@ export default function Navbar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="fixed inset-x-4 top-4 z-[120] rounded-3xl border border-white/10 bg-[#0a0a0a]/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+              className="fixed inset-x-4 top-4 z-[120] rounded-3xl border border-white/10 bg-[#0a0a0a] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-5">
                 <div>
@@ -175,7 +174,7 @@ export default function Navbar() {
                 <Link
                   href="#contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:bg-white"
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-5 py-4 text-sm font-bold tracking-[0.18em] uppercase text-black transition-all duration-300 hover:bg-white"
                 >
                   Hire Me
                 </Link>

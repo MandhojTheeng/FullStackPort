@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import React from "react";
-import Image from "next/image"; // Optimization for Next.js
+import Image from "next/image";
 
 export default function About() {
   const stats = [
@@ -30,22 +30,23 @@ export default function About() {
               The Architect
             </span>
             
-            {/* PROFILE IMAGE CONTAINER */}
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-[4/5] w-full grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 overflow-hidden bg-zinc-900"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 border border-white/5 group"
             >
               <Image 
-                src="/profile.jpg" 
+                src="/santosh.jpg" 
                 alt="Santosh Timalsina"
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-all duration-1000 ease-in-out" 
                 priority
               />
-              {/* Subtle Overlay Decor */}
-              <div className="absolute inset-0 border-[20px] border-black/10 pointer-events-none" />
+              <div className="absolute top-0 left-0 w-6 h-[1px] bg-white/30" />
+              <div className="absolute top-0 left-0 w-[1px] h-6 bg-white/30" />
+              <div className="absolute bottom-0 right-0 w-6 h-[1px] bg-white/30" />
+              <div className="absolute bottom-0 right-0 w-[1px] h-6 bg-white/30" />
             </motion.div>
           </div>
 

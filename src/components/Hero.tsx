@@ -10,82 +10,76 @@ export default function Hero() {
   if (!mounted) return null;
 
   return (
-    <section className="min-h-screen bg-[#050505] text-white selection:bg-white selection:text-black font-sans antialiased overflow-x-hidden flex flex-col uppercase relative">
+    <section className="min-h-screen bg-[#F0F0F0] text-black font-sans selection:bg-black selection:text-white overflow-hidden flex flex-col relative">
       
-      {/* 0. DATA GRID OVERLAY */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-0" 
-           style={{ backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
+      {/* 0. OVERLAY NOISE (Texture) */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.05] z-50 contrast-150 brightness-100" 
+           style={{ backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")` }} />
 
-      {/* REPLACED OLD NAV WITH A SPACER WRAPPER */}
-      <div className="flex-grow pt-32 md:pt-44 px-6 md:px-12 relative z-10">
+      <div className="flex-grow flex flex-col relative pt-16 md:pt-24">
         
-        {/* 1. CORE HEADING */}
-        <div className="mb-20">
+        {/* BIG NUMERIC INDICATOR - Adjusted for mobile visibility */}
+        <div className="absolute top-6 right-6 md:top-10 md:right-10 text-[12vw] md:text-[10vw] font-black opacity-[0.03] leading-none pointer-events-none">
+          01
+        </div>
+
+        {/* MAIN TYPEFACE SECTION */}
+        <div className="px-5 sm:px-8 md:px-12 lg:px-20 py-8 md:py-12">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ y: 60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="text-[11vw] font-[1000] leading-[0.8] tracking-[-0.07em]">
-              FULL STACK<br />
-              <span className="text-transparent stroke-text">DEVELOPMENT</span>
+            {/* Using clamp() for fluid typography: min, preferred, max */}
+            <h1 className="text-[clamp(3.5rem,15vw,14rem)] font-[1000] leading-[0.8] tracking-[-0.06em] uppercase">
+              ARCHITECTING<br />
+              <div className="flex items-center gap-4">
+                <span>DIGITAL</span>
+                <span className="h-[2px] flex-grow bg-black mt-[2vw] hidden lg:block" />
+              </div>
+              SYSTEMS.
             </h1>
-            <div className="mt-8 flex flex-col md:flex-row gap-8 items-start">
-              <p className="text-sm font-bold opacity-50 max-w-xl leading-relaxed lowercase">
-                From core server configuration to high-fidelity UI. <br/>
-                I engineer the entire digital ecosystem for scale and speed.
-              </p>
-              <div className="h-[1px] w-24 bg-green-500 mt-3 hidden md:block" />
-            </div>
           </motion.div>
-        </div>
 
-        {/* 2. EXPERTISE GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border-y border-white/10 bg-zinc-950/20 backdrop-blur-sm">
-          <div className="lg:col-span-4 border-r border-white/10 p-10 font-mono text-[10px] space-y-3">
-            <h4 className="text-green-500 mb-6 font-black tracking-[0.3em]">SERVICE MANIFEST</h4>
-            <div className="flex justify-between border-b border-white/5 pb-1"><span>01 SERVER_ADMIN</span><span className="text-green-500">ACTIVE</span></div>
-            <div className="flex justify-between border-b border-white/5 pb-1"><span>02 BACKEND_ENGINE</span><span className="text-green-500">ACTIVE</span></div>
-            <div className="flex justify-between border-b border-white/5 pb-1"><span>03 FRONTEND_UX</span><span className="text-green-500">ACTIVE</span></div>
-            <div className="flex justify-between border-b border-white/5 pb-1"><span>04 CMS_WORDPRESS</span><span className="text-green-500">ACTIVE</span></div>
-            <div className="flex justify-between border-b border-white/5 pb-1"><span>05 DB_OPTIMIZATION</span><span className="text-green-500">ACTIVE</span></div>
-          </div>
+          <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+            <div className="lg:col-span-4 space-y-2">
+              <p className="text-lg md:text-xl font-bold leading-tight uppercase tracking-tighter">
+                Full Stack Developer <br className="hidden md:block"/> 
+                <span className="text-zinc-400">& Systems Engineer.</span>
+              </p>
+            </div>
 
-          <div className="lg:col-span-8 p-10 lg:p-16 space-y-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div className="space-y-4">
-                <span className="text-[10px] font-black text-green-500 tracking-[0.4em]">END-TO-END</span>
-                <p className="text-xl font-black leading-tight">Server Configuration to Production. Linux, Nginx, Docker, and Cloud.</p>
-              </div>
-              <div className="space-y-4">
-                <span className="text-[10px] font-black text-green-500 tracking-[0.4em]">CMS & UI</span>
-                <p className="text-xl font-black leading-tight">Modern Web Apps or Enterprise WordPress. Pixel-perfect UI/UX.</p>
-              </div>
+            <div className="lg:col-span-8 lg:pl-20">
+              <p className="text-base md:text-lg font-medium leading-relaxed max-w-xl italic opacity-80">
+                I build high-performance web environments. From deep-level server configuration (Nginx, Docker) to front-end experiences that actually convert. My code isn't just "functional"—it's an asset.
+              </p>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 3. TECH MARQUEE */}
-      <div className="py-8 bg-white text-black overflow-hidden relative z-20 mt-20">
-        <motion.div 
-          className="flex gap-20 whitespace-nowrap text-[15px] font-[1000] tracking-[0.5em]"
-          animate={{ x: [0, -1500] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        >
-          {[...Array(6)].map((_, i) => (
-            <React.Fragment key={i}>
-              <span>NGINX</span> <span>DOCKER</span> <span>WORDPRESS</span> <span>REACT</span> <span>NODE.JS</span> 
-            </React.Fragment>
+        {/* THE "STAMP" GRID (Bottom Section) */}
+        {/* Responsive fix: 1 col on tiny mobile, 2 cols on tablet, 4 on desktop */}
+        <div className="mt-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-black uppercase">
+          {[
+            { label: "Core Stack", value: "Node / React" },
+            { label: "Cloud", value: "AWS / Docker" },
+            { label: "Performance", value: "99+ Lighthouse" },
+            { label: "UI/UX", value: "Framer / Figma" },
+          ].map((item, i) => (
+            <div 
+              key={i} 
+              className="p-6 md:p-8 border-b sm:border-b-0 sm:border-r last:border-r-0 border-black/10 hover:bg-white transition-colors cursor-default group"
+            >
+              <p className="text-[10px] font-black text-zinc-400 mb-1 md:mb-2 group-hover:text-black transition-colors">
+                {item.label}
+              </p>
+              <p className="text-sm md:text-base font-black italic sm:not-italic">
+                {item.value}
+              </p>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
-
-      <style jsx>{`
-        .stroke-text {
-          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </section>
   );
 }

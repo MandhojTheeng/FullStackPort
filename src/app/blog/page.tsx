@@ -6,6 +6,16 @@ import React from "react";
 
 const FALLBACK_POSTS = [
   {
+    id: 0,
+    title: "Building Production-Ready AI Agents",
+    excerpt: "A deep dive into engineering reliability: implementing tool calling, automated retries, guardrails, and comprehensive audit logs.",
+    category: "AI & Agents",
+    publishedAt: "2026-03-10",
+    slug: "building-production-ready-ai-agents",
+    image: "/blog1.png",
+    tags: ["AI", "LLMOps", "Architecture"]
+  },
+  {
     id: 1,
     title: "Architecting Scalable Microservices with Next.js 15",
     excerpt: "How I approach building production-ready systems that handle high traffic while maintaining 99.9% uptime.",
@@ -44,12 +54,12 @@ const FALLBACK_POSTS = [
 ];
 
 export default function BlogPage() {
-  const posts = FALLBACK_POSTS; // In production, keep your fetch logic here
+  const posts = FALLBACK_POSTS;
 
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-green-500 selection:text-black font-sans antialiased overflow-x-hidden relative">
       
-      {/* 0. DATA GRID OVERLAY (Matching Hero) */}
+      {/* 0. DATA GRID OVERLAY */}
       <div className="fixed inset-0 opacity-[0.05] pointer-events-none z-0" 
            style={{ backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
 
@@ -81,13 +91,12 @@ export default function BlogPage() {
             <div>
               <h4 className="text-green-500 mb-4 font-black tracking-widest">CATEGORIES</h4>
               <ul className="space-y-2 opacity-60">
-                <li>01_ARCHITECTURE</li>
-                <li>02_INFRASTRUCTURE</li>
-                <li>03_PRODUCTIVITY</li>
-                <li>04_AI_LOGS</li>
+                <li className="hover:text-green-500 cursor-pointer transition-colors">01_AI_&_AGENTS</li>
+                <li className="hover:text-green-500 cursor-pointer transition-colors">02_ARCHITECTURE</li>
+                <li className="hover:text-green-500 cursor-pointer transition-colors">03_INFRASTRUCTURE</li>
+                <li className="hover:text-green-500 cursor-pointer transition-colors">04_MANAGEMENT</li>
               </ul>
             </div>
-          
           </div>
 
           {/* Main Feed */}
@@ -103,14 +112,26 @@ export default function BlogPage() {
                   className="group relative border-b border-white/10 md:border-r p-8 lg:p-12 hover:bg-white/[0.02] transition-colors flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex justify-between items-center mb-10 font-mono text-[10px]">
+                    <div className="flex justify-between items-center mb-6 font-mono text-[10px]">
                       <span className="text-green-500 tracking-[0.3em] font-black uppercase">
                         [{post.category}]
                       </span>
                       <span className="opacity-30 tracking-widest">{post.publishedAt}</span>
                     </div>
 
-                    <h2 className="text-3xl font-black leading-none tracking-tight mb-6 uppercase group-hover:text-green-500 transition-colors">
+                    {/* FEATURED IMAGE - Only rendered for the specific AI Agent post */}
+                    {post.image && (
+                      <div className="relative w-full h-56 mb-8 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10">
+                        <img 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-in-out"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
+                      </div>
+                    )}
+
+                    <h2 className="text-3xl font-black leading-[0.9] tracking-tight mb-6 uppercase group-hover:text-green-500 transition-colors">
                       {post.title}
                     </h2>
 
@@ -122,7 +143,7 @@ export default function BlogPage() {
                   <div className="space-y-6">
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map(tag => (
-                        <span key={tag} className="text-[9px] font-mono border border-white/20 px-2 py-0.5 rounded-full opacity-40 group-hover:opacity-100 transition-opacity">
+                        <span key={tag} className="text-[9px] font-mono border border-white/20 px-2 py-0.5 rounded-full opacity-40 group-hover:opacity-100 group-hover:border-green-500/50 transition-all">
                           #{tag}
                         </span>
                       ))}
