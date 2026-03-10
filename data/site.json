@@ -1,9 +1,11 @@
 {
   "hero": {
-    "greeting": "Hi, I'm",
-    "title": "Santosh Timalsina",
-    "subtitle": "Full Stack Developer & Creative Designer",
-    "description": "I build amazing digital experiences with modern technologies. Let me help you create something great!",
+    "headingLine1": "ARCHITECTING",
+    "headingLine2": "DIGITAL",
+    "headingLine3": "SYSTEMS.",
+    "subtitle": "Full Stack Developer",
+    "role": "Systems Engineer",
+    "description": "I build high-performance web environments. From deep-level server configuration (Nginx, Docker) to front-end experiences that actually convert. My code isn't just \"functional\"—it's an asset.",
     "ctaPrimary": "View My Work",
     "ctaSecondary": "Contact Me",
     "ctaPrimaryLink": "#projects",
@@ -11,16 +13,20 @@
     "image": "/profile.jpg",
     "stats": [
       {
-        "value": "5+",
-        "label": "Years Exp."
+        "label": "Core Stack",
+        "value": "Node / React"
       },
       {
-        "value": "25+",
-        "label": "Projects"
+        "label": "Cloud",
+        "value": "AWS / Docker"
       },
       {
-        "value": "15+",
-        "label": "Clients"
+        "label": "Performance",
+        "value": "99+ Lighthouse"
+      },
+      {
+        "label": "UI/UX",
+        "value": "Framer / Figma"
       }
     ],
     "socialLinks": [

@@ -60,8 +60,13 @@ export default function BlogPage() {
     <main className="min-h-screen bg-[#050505] text-white selection:bg-green-500 selection:text-black font-sans antialiased overflow-x-hidden relative">
       
       {/* 0. DATA GRID OVERLAY */}
-      <div className="fixed inset-0 opacity-[0.05] pointer-events-none z-0" 
-           style={{ backgroundImage: `radial-gradient(#fff 1px, transparent 1px)`, backgroundSize: '30px 30px' }} />
+      <div 
+        className="fixed inset-0 opacity-[0.05] pointer-events-none z-0" 
+        style={{ 
+          backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", 
+          backgroundSize: "30px 30px" 
+        }} 
+      />
 
       <div className="relative z-10 pt-32 pb-20 px-6 md:px-12 max-w-[1600px] mx-auto">
         
@@ -73,7 +78,12 @@ export default function BlogPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-[10vw] font-[1000] leading-[0.8] tracking-[-0.07em] uppercase">
-              THE <span className="text-transparent stroke-text">BLOG</span>
+              THE <span 
+                className="text-transparent" 
+                style={{ WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.2)" }}
+              >
+                BLOG
+              </span>
             </h1>
             <div className="mt-8 flex flex-col md:flex-row gap-8 items-start">
               <div className="h-[1px] w-24 bg-green-500 mt-3 hidden md:block" />
@@ -86,7 +96,6 @@ export default function BlogPage() {
 
         {/* 2. BLOG GRID */}
         <section className="grid grid-cols-1 lg:grid-cols-12 border-t border-white/10">
-          {/* Left Sidebar Info */}
           <div className="lg:col-span-3 border-r border-white/10 p-6 hidden lg:block font-mono text-[10px] space-y-8">
             <div>
               <h4 className="text-green-500 mb-4 font-black tracking-widest">CATEGORIES</h4>
@@ -99,7 +108,6 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Main Feed */}
           <div className="lg:col-span-9">
             <div className="grid grid-cols-1 md:grid-cols-2">
               {posts.map((post, idx) => (
@@ -109,65 +117,60 @@ export default function BlogPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="group relative border-b border-white/10 md:border-r p-8 lg:p-12 hover:bg-white/[0.02] transition-colors flex flex-col justify-between"
+                  className="group relative border-b border-white/10 md:border-r hover:bg-white/[0.02] transition-colors overflow-hidden"
                 >
-                  <div>
-                    <div className="flex justify-between items-center mb-6 font-mono text-[10px]">
-                      <span className="text-green-500 tracking-[0.3em] font-black uppercase">
-                        [{post.category}]
-                      </span>
-                      <span className="opacity-30 tracking-widest">{post.publishedAt}</span>
-                    </div>
-
-                    {/* FEATURED IMAGE - Only rendered for the specific AI Agent post */}
-                    {post.image && (
-                      <div className="relative w-full h-56 mb-8 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10">
-                        <img 
-                          src={post.image} 
-                          alt={post.title}
-                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-in-out"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
-                      </div>
-                    )}
-
-                    <h2 className="text-3xl font-black leading-[0.9] tracking-tight mb-6 uppercase group-hover:text-green-500 transition-colors">
-                      {post.title}
-                    </h2>
-
-                    <p className="text-sm opacity-50 lowercase font-medium mb-8 leading-relaxed max-w-md">
-                      {post.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.map(tag => (
-                        <span key={tag} className="text-[9px] font-mono border border-white/20 px-2 py-0.5 rounded-full opacity-40 group-hover:opacity-100 group-hover:border-green-500/50 transition-all">
-                          #{tag}
+                  <Link 
+                    href={`/blog/${post.slug}`} 
+                    className="flex flex-col justify-between h-full p-8 lg:p-12 z-10 relative"
+                  >
+                    <div>
+                      <div className="flex justify-between items-center mb-6 font-mono text-[10px]">
+                        <span className="text-green-500 tracking-[0.3em] font-black uppercase">
+                          [{post.category}]
                         </span>
-                      ))}
+                        <span className="opacity-30 tracking-widest">{post.publishedAt}</span>
+                      </div>
+
+                      {post.image && (
+                        <div className="relative w-full h-56 mb-8 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10">
+                          <img 
+                            src={post.image} 
+                            alt={post.title}
+                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-in-out"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
+                        </div>
+                      )}
+
+                      <h2 className="text-3xl font-black leading-[0.9] tracking-tight mb-6 uppercase group-hover:text-green-500 transition-colors">
+                        {post.title}
+                      </h2>
+
+                      <p className="text-sm opacity-50 lowercase font-medium mb-8 leading-relaxed max-w-md">
+                        {post.excerpt}
+                      </p>
                     </div>
 
-                    <Link 
-                      href={`/blog/${post.slug}`}
-                      className="inline-flex items-center gap-4 text-[11px] font-black tracking-[0.4em] uppercase group-hover:gap-6 transition-all"
-                    >
-                      READ MORE<span className="text-green-500">→</span>
-                    </Link>
-                  </div>
+                    <div className="space-y-6">
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map(tag => (
+                          <span key={tag} className="text-[9px] font-mono border border-white/20 px-2 py-0.5 rounded-full opacity-40 group-hover:opacity-100 group-hover:border-green-500/50 transition-all">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="inline-flex items-center gap-4 text-[11px] font-black tracking-[0.4em] uppercase group-hover:gap-6 transition-all">
+                        READ MORE <span className="text-green-500">→</span>
+                      </div>
+                    </div>
+                  </Link>
                 </motion.article>
               ))}
             </div>
           </div>
         </section>
       </div>
-
-      <style jsx>{`
-        .stroke-text {
-          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </main>
   );
 }

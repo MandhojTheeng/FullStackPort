@@ -30,16 +30,18 @@ const ALLOWED_SECTIONS = ["hero", "about", "projects", "contact", "footer"];
 
 interface SiteData {
   hero: {
-    greeting: string;
-    title: string;
+    headingLine1: string;
+    headingLine2: string;
+    headingLine3: string;
     subtitle: string;
+    role: string;
     description: string;
     ctaPrimary: string;
     ctaSecondary: string;
     ctaPrimaryLink: string;
     ctaSecondaryLink: string;
     image: string;
-    stats: Array<{ value: string; label: string }>;
+    stats: Array<{ label: string; value: string }>;
     socialLinks: Array<{ name: string; url: string; icon: string }>;
   };
   about: {
