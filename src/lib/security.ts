@@ -193,7 +193,7 @@ export async function verifyPassword(password: string, stored: string): Promise<
 export function containsSqlInjectionPatterns(input: string): boolean {
   const patterns = [
     /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE)\b)/i,
-    /(\b(UNION|JOIN|FROM|WHERE)\b)/i,
+    /(\b(UNION|JOIN|WHERE)\b)/i,
     /(--|\/\*|\*\/|;--)/,
     /(\bOR\b.*\b=\b|\bAND\b.*\b=\b)/i,
   ];

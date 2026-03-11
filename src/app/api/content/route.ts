@@ -26,7 +26,7 @@ function getTokenStore(): Map<string, { username: string; expiresAt: number }> {
 const dataFilePath = path.join(process.cwd(), "data", "site.json");
 
 // Allowed sections for updates
-const ALLOWED_SECTIONS = ["hero", "about", "projects", "contact", "footer"];
+const ALLOWED_SECTIONS = ["hero", "about", "contact", "footer"];
 
 interface SiteData {
   hero: {
@@ -46,40 +46,30 @@ interface SiteData {
   };
   about: {
     title: string;
-    subtitle: string;
-    bio: string[];
-    skills: string[];
+    heading: string;
+    bio: string;
+    expertise: Array<{ title: string; desc: string }>;
     stats: Array<{ value: string; label: string }>;
   };
-  projects: Array<{
-    id: number;
-    title: string;
-    description: string;
-    tech: string[];
-    link: string;
-    featured: boolean;
-    image: string;
-  }>;
   contact: {
+    heading: string;
+    description: string;
     email: string;
-    phone: string;
     location: string;
     socialLinks: Array<{ name: string; url: string; icon: string }>;
-  };
-  footer: {
-    brand: { name: string; tagline: string };
-    description: string;
-    quickLinks: Array<{ name: string; href: string }>;
-    builtWith: string[];
     copyright: string;
   };
-  messages: Array<{
-    id: string;
-    name: string;
-    email: string;
-    message: string;
-    createdAt: string;
-  }>;
+  footer: {
+    headingLine1: string;
+    headingLine2: string;
+    headingLine3: string;
+    availabilityText: string;
+    availabilitySubtext: string;
+    navLinks: Array<{ name: string; href: string; desc: string }>;
+    socialLinks: Array<{ name: string; url: string; icon: string }>;
+    brandInitials: string;
+    copyright: string;
+  };
 }
 
 function readSiteData(): SiteData {
@@ -132,9 +122,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const data = readSiteData();
-    // Don't return messages in public API
-    const { messages, ...publicData } = data;
-    return NextResponse.json(publicData, { headers: getSecurityHeaders() });
+    // Return all site data
+    return NextResponse.json(data, { headers: getSecurityHeaders() });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch site content" },

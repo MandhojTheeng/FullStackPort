@@ -18,34 +18,31 @@ export interface HeroData {
 
 export interface AboutData {
   title: string;
-  subtitle: string;
-  bio: string[];
-  skills: string[];
+  heading: string;
+  bio: string;
+  image: string;
+  expertise: Array<{ title: string; desc: string }>;
   stats: Array<{ value: string; label: string }>;
 }
 
-export interface Project {
-  id: number;
-  title: string;
-  description: string;
-  tech: string[];
-  link: string;
-  featured: boolean;
-  image: string;
-}
-
 export interface ContactData {
+  heading: string;
+  description: string;
   email: string;
-  phone: string;
   location: string;
   socialLinks: Array<{ name: string; url: string; icon: string }>;
+  copyright: string;
 }
 
 export interface FooterData {
-  brand: { name: string; tagline: string };
-  description: string;
-  quickLinks: Array<{ name: string; href: string }>;
-  builtWith: string[];
+  headingLine1: string;
+  headingLine2: string;
+  headingLine3: string;
+  availabilityText: string;
+  availabilitySubtext: string;
+  navLinks: Array<{ name: string; href: string; desc: string }>;
+  socialLinks: Array<{ name: string; url: string; icon: string }>;
+  brandInitials: string;
   copyright: string;
 }
 
@@ -57,18 +54,6 @@ export interface Message {
   createdAt: string;
 }
 
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  author: string;
-  category: string;
-  tags: string[];
-  publishedAt: string;
-}
-
 export interface Settings {
   siteName: string;
   siteDescription: string;
@@ -76,7 +61,7 @@ export interface Settings {
   cacheDuration: number;
 }
 
-export type TabType = "dashboard" | "hero" | "about" | "projects" | "contact" | "footer" | "messages" | "blogs" | "settings";
+export type TabType = "dashboard" | "hero" | "about" | "contact" | "footer" | "settings";
 
 export interface NavItem {
   id: TabType;
@@ -87,23 +72,5 @@ export interface NavItem {
 export interface ToastMessage {
   type: "success" | "error";
   text: string;
-}
-
-export interface ProjectFormData {
-  title: string;
-  description: string;
-  tech: string;
-  link: string;
-  featured: boolean;
-  image: string;
-}
-
-export interface BlogFormData {
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  category: string;
-  tags: string;
 }
 

@@ -19,7 +19,7 @@ export default function Sidebar({
   sidebarOpen,
   onSidebarClose,
 }: SidebarProps) {
-  const filteredNav = navItems.filter((item) => item.id !== "messages");
+  const filteredNav = navItems;
 
   return (
     <>

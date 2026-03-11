@@ -2,12 +2,31 @@
 
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { HeroData } from "@/lib/admin-types";
 
-export default function Hero() {
+interface HeroProps {
+  heroData?: HeroData;
+}
+
+export default function Hero({ heroData }: HeroProps) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
+
+  // Use hero data from props, fallback to default values if not provided
+  const headingLine1 = heroData?.headingLine1 || "ARCHITECTING";
+  const headingLine2 = heroData?.headingLine2 || "DIGITAL";
+  const headingLine3 = heroData?.headingLine3 || "SYSTEMS.";
+  const subtitle = heroData?.subtitle || "Full Stack Developer";
+  const role = heroData?.role || "Systems Engineer";
+  const description = heroData?.description || "I build high-performance web environments. From deep-level server configuration (Nginx, Docker) to front-end experiences that actually convert. My code isn't just \"functional\"—it's an asset.";
+  const stats = heroData?.stats || [
+    { label: "Core Stack", value: "Node / React" },
+    { label: "Cloud", value: "AWS / Docker" },
+    { label: "Performance", value: "99+ Lighthouse" },
+    { label: "UI/UX", value: "Framer / Figma" },
+  ];
 
   return (
     <section className="min-h-screen bg-[#F0F0F0] text-black font-sans selection:bg-black selection:text-white overflow-hidden flex flex-col relative">
@@ -32,26 +51,26 @@ export default function Hero() {
           >
             {/* Using clamp() for fluid typography: min, preferred, max */}
             <h1 className="text-[clamp(3.5rem,15vw,14rem)] font-[1000] leading-[0.8] tracking-[-0.06em] uppercase">
-              ARCHITECTING<br />
+              {headingLine1}<br />
               <div className="flex items-center gap-4">
-                <span>DIGITAL</span>
+                <span>{headingLine2}</span>
                 <span className="h-[2px] flex-grow bg-black mt-[2vw] hidden lg:block" />
               </div>
-              SYSTEMS.
+              {headingLine3}
             </h1>
           </motion.div>
 
           <div className="mt-12 md:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
             <div className="lg:col-span-4 space-y-2">
               <p className="text-lg md:text-xl font-bold leading-tight uppercase tracking-tighter">
-                Full Stack Developer <br className="hidden md:block"/> 
-                <span className="text-zinc-400">& Systems Engineer.</span>
+                {subtitle} <br className="hidden md:block"/> 
+                <span className="text-zinc-400">& {role}.</span>
               </p>
             </div>
 
             <div className="lg:col-span-8 lg:pl-20">
               <p className="text-base md:text-lg font-medium leading-relaxed max-w-xl italic opacity-80">
-                I build high-performance web environments. From deep-level server configuration (Nginx, Docker) to front-end experiences that actually convert. My code isn't just "functional"—it's an asset.
+                {description}
               </p>
             </div>
           </div>
@@ -60,12 +79,7 @@ export default function Hero() {
         {/* THE "STAMP" GRID (Bottom Section) */}
         {/* Responsive fix: 1 col on tiny mobile, 2 cols on tablet, 4 on desktop */}
         <div className="mt-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-black uppercase">
-          {[
-            { label: "Core Stack", value: "Node / React" },
-            { label: "Cloud", value: "AWS / Docker" },
-            { label: "Performance", value: "99+ Lighthouse" },
-            { label: "UI/UX", value: "Framer / Figma" },
-          ].map((item, i) => (
+          {stats.map((item, i) => (
             <div 
               key={i} 
               className="p-6 md:p-8 border-b sm:border-b-0 sm:border-r last:border-r-0 border-black/10 hover:bg-white transition-colors cursor-default group"

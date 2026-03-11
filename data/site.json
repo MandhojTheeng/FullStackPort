@@ -6,11 +6,6 @@
     "subtitle": "Full Stack Developer",
     "role": "Systems Engineer",
     "description": "I build high-performance web environments. From deep-level server configuration (Nginx, Docker) to front-end experiences that actually convert. My code isn't just \"functional\"—it's an asset.",
-    "ctaPrimary": "View My Work",
-    "ctaSecondary": "Contact Me",
-    "ctaPrimaryLink": "#projects",
-    "ctaSecondaryLink": "#contact",
-    "image": "/profile.jpg",
     "stats": [
       {
         "label": "Core Stack",
@@ -29,6 +24,11 @@
         "value": "Framer / Figma"
       }
     ],
+    "ctaPrimary": "View My Work",
+    "ctaSecondary": "Contact Me",
+    "ctaPrimaryLink": "#projects",
+    "ctaSecondaryLink": "#contact",
+    "image": "/santosh.jpg",
     "socialLinks": [
       {
         "name": "GitHub",
@@ -48,43 +48,70 @@
     ]
   },
   "about": {
-    "title": "Passiona",
-    "subtitle": "About me",
-    "bio": [
-      "I'm a passionate full-stack developer with expertise in building modern web applications. I specialize in creating seamless user experiences with React, Next.js, and TypeScrip",
-      "With years of experience in the field, I combine my professional knowledge with creative problem-solving to deliver exceptional results.",
-      "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."
-    ],
-    "skills": [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Node.js",
-      "Python",
-      "Tailwind CSS",
-      "PostgreSQL",
-      "MongoDB",
-      "GraphQL",
-      "AWS"
+    "title": "The Architect",
+    "heading": "Santosh Timalsina is a Full Stack Developer specialized in the entire digital lifecycle—from the raw server metal to the final pixel of UI.",
+    "bio": "I bridge the gap between high-level business requirements and low-level technical execution. Whether it is configuring a Linux environment, building a custom WordPress CMS, or scaling Node.js APIs, I deliver software that is as reliable as it is beautiful.",
+    "image": "/santosh.jpg",
+    "expertise": [
+      {
+        "title": "Infrastructure",
+        "desc": "Server Config, Nginx, Docker, AWS, Security Protocols."
+      },
+      {
+        "title": "Development",
+        "desc": "Full Stack Architect. Node.js, Python, React, Next.js."
+      },
+      {
+        "title": "CMS Solutions",
+        "desc": "Expert WordPress, Custom Themes, Headless Architectures."
+      },
+      {
+        "title": "Interface",
+        "desc": "Pixel-perfect UI, Fluid Motion, User-Centric Logic."
+      }
     ],
     "stats": [
       {
-        "value": "3+",
-        "label": "Years Experience"
+        "value": "03",
+        "label": "Years in Stack"
       },
       {
-        "value": "20+",
-        "label": "Projects Completed"
+        "value": "24",
+        "label": "Systems Deployed"
       },
       {
-        "value": "10+",
-        "label": "Happy"
+        "value": "12",
+        "label": "Global Clients"
       },
       {
-        "value": "0",
-        "label": ""
+        "value": "99",
+        "label": "Uptime Focus"
       }
     ]
+  },
+  "contact": {
+    "heading": "READY TO SCALE?",
+    "description": "Currently accepting new projects for 2026. Whether it is a server-side overhaul or a high-fidelity frontend, let's build something exceptional.",
+    "email": "timalsinasantosh19@gmail.com",
+    "location": "KATHMANDU,NEPAL",
+    "socialLinks": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com",
+        "icon": "github"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://linkedin.com",
+        "icon": "linkedin"
+      },
+      {
+        "name": "Twitter",
+        "url": "https://twitter.com",
+        "icon": "twitter"
+      }
+    ],
+    "copyright": "© 2026 Santosh Timalsina"
   },
   "projects": [
     {
@@ -168,120 +195,53 @@
       "image": ""
     }
   ],
-  "contact": {
-    "email": "timalsinasantosh19@gmail.com",
-    "phone": "+977 9843385766",
-    "location": "Kathmandu, Nepal",
+  "footer": {
+    "headingLine1": "TURNING",
+    "headingLine2": "COMPLEX IDEAS",
+    "headingLine3": "INTO REALITY",
+    "availabilityText": "Available for Worldwide",
+    "availabilitySubtext": "Remote & Freelance",
+    "navLinks": [
+      {
+        "name": "About",
+        "href": "#about",
+        "desc": "The Architect"
+      },
+      {
+        "name": "Projects",
+        "href": "#projects",
+        "desc": "Selected Works"
+      },
+      {
+        "name": "Blog",
+        "href": "/blog",
+        "desc": "Insights & Thoughts"
+      },
+      {
+        "name": "Contact",
+        "href": "#contact",
+        "desc": "Start Conversation"
+      }
+    ],
     "socialLinks": [
       {
         "name": "GitHub",
         "url": "https://github.com",
-        "icon": "custom"
+        "icon": "github"
       },
       {
         "name": "LinkedIn",
         "url": "https://linkedin.com",
-        "icon": "custom"
+        "icon": "linkedin"
       },
       {
         "name": "Twitter",
-        "url": "",
-        "icon": "custom"
-      }
-    ]
-  },
-  "footer": {
-    "brand": {
-      "name": "Santosh",
-      "tagline": "Full Stack"
-    },
-    "description": "Full Stack Developer & UI/UX Designer based in Kathmandu, Nepal. Building exceptional digital experiences with modern technologies",
-    "quickLinks": [
-      {
-        "name": "About",
-        "href": "#about"
-      },
-      {
-        "name": "Contact",
-        "href": "#contact"
+        "url": "https://twitter.com",
+        "icon": "twitter"
       }
     ],
-    "builtWith": [
-      "Next.js",
-      "Tailwind CSS"
-    ],
-    "copyright": "© {year} Santosh. All rights"
+    "brandInitials": "ST",
+    "copyright": "© {year} Santosh Timalsina"
   },
-  "messages": [
-    {
-      "id": "mmgq3efnbndlfoey0q4",
-      "name": "santosh",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "hyyyy",
-      "createdAt": "2026-03-07T19:35:09.011Z"
-    },
-    {
-      "id": "mmgqvmpdf3077oz7kkb",
-      "name": "santosh",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "1111",
-      "createdAt": "2026-03-07T19:57:06.097Z"
-    },
-    {
-      "id": "mmgqz7fwqygtyffenu",
-      "name": "तिमल्सिना",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "hhhh",
-      "createdAt": "2026-03-07T19:59:52.940Z"
-    },
-    {
-      "id": "mmgr2pabn79rfrlgwv",
-      "name": "तिमल्सिना",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "jjj",
-      "createdAt": "2026-03-07T20:02:36.035Z"
-    },
-    {
-      "id": "mmgr3ahjyzylwe0nuom",
-      "name": "Test User",
-      "email": "test@example.com",
-      "message": "This is a test message",
-      "createdAt": "2026-03-07T20:03:03.511Z"
-    },
-    {
-      "id": "mmgr3do8mb54bszue1m",
-      "name": "fff",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "hhhh",
-      "createdAt": "2026-03-07T20:03:07.640Z"
-    },
-    {
-      "id": "mmgr3yuue61i57rhc44",
-      "name": "तिमल्सिना",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "ggg",
-      "createdAt": "2026-03-07T20:03:35.094Z"
-    },
-    {
-      "id": "mmgrbt7m6qerpduscn3",
-      "name": "तिमल्सिना",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "jjj",
-      "createdAt": "2026-03-07T20:09:41.026Z"
-    },
-    {
-      "id": "mmgreljysd9l46lrqm",
-      "name": "तिमल्सिना",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "jjj",
-      "createdAt": "2026-03-07T20:11:51.070Z"
-    },
-    {
-      "id": "mmhyfp5kcguhr5q014g",
-      "name": "santish",
-      "email": "timalsinasantosh19@gmail.com",
-      "message": "hhhhhhhhhh",
-      "createdAt": "2026-03-08T16:16:25.880Z"
-    }
-  ]
+  "messages": []
 }

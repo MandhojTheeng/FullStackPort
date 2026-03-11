@@ -3,21 +3,15 @@
 import { motion } from "framer-motion";
 import React from "react";
 import Image from "next/image";
+import { AboutData } from "@/lib/admin-types";
 
-export default function About() {
-  const stats = [
-    { value: "03", label: "Years in Stack" },
-    { value: "24", label: "Systems Deployed" },
-    { value: "12", label: "Global Clients" },
-    { value: "99", label: "Uptime Focus" },
-  ];
+interface AboutProps {
+  aboutData: AboutData;
+}
 
-  const expertises = [
-    { title: "Infrastructure", desc: "Server Config, Nginx, Docker, AWS, Security Protocols." },
-    { title: "Development", desc: "Full Stack Architect. Node.js, Python, React, Next.js." },
-    { title: "CMS Solutions", desc: "Expert WordPress, Custom Themes, Headless Architectures." },
-    { title: "Interface", desc: "Pixel-perfect UI, Fluid Motion, User-Centric Logic." }
-  ];
+export default function About({ aboutData }: AboutProps) {
+  const stats = aboutData.stats || [];
+  const expertises = aboutData.expertise || [];
 
   return (
     <section id="about" className="bg-black text-white py-32 px-6 md:px-12 selection:bg-green-500">
@@ -27,7 +21,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32 items-start">
           <div className="lg:col-span-4 space-y-8">
             <span className="text-green-500 font-bold tracking-[0.3em] text-[10px] uppercase block">
-              The Architect
+              {aboutData.title}
             </span>
             
             <motion.div 
@@ -37,7 +31,7 @@ export default function About() {
               className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 border border-white/5 group"
             >
               <Image 
-                src="/santosh.jpg" 
+                src={aboutData.image || "/santosh.jpg"} 
                 alt="Santosh Timalsina"
                 fill
                 className="object-cover group-hover:scale-105 transition-all duration-1000 ease-in-out" 
@@ -56,7 +50,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-6xl font-medium leading-[1.1] tracking-tight"
             >
-              Santosh Timalsina is a <span className="text-zinc-500">Full Stack Developer</span> specialized in the entire digital lifecycle—from the raw <span className="text-zinc-500">server metal</span> to the final <span className="text-zinc-500">pixel of UI.</span>
+              {aboutData.heading}
             </motion.h2>
           </div>
         </div>
@@ -84,7 +78,7 @@ export default function About() {
         <div className="mt-40 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <p className="text-2xl md:text-3xl font-light leading-relaxed text-zinc-400">
-              I bridge the gap between high-level business requirements and low-level technical execution. Whether it is configuring a <span className="text-white font-bold">Linux environment</span>, building a <span className="text-white font-bold">custom WordPress CMS</span>, or scaling <span className="text-white font-bold">Node.js APIs</span>, I deliver software that is as reliable as it is beautiful.
+              {aboutData.bio}
             </p>
           </div>
           

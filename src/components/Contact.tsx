@@ -1,11 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface ContactData {
+  heading: string;
+  description: string;
+  email: string;
+  location: string;
+  socialLinks: Array<{ name: string; url: string; icon: string }>;
+  copyright: string;
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [contactData, setContactData] = useState<ContactData | null>(null);
+
+  useEffect(() => {
+    // Fetch contact data from API
+    fetch("/api/content")
+      .then(res => res.json())
+      .then(data => {
+        if (data.contact) {
+          setContactData(data.contact);
+        }
+      })
+      .catch(err => console.error("Failed to load contact data:", err));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,6 +35,18 @@ export default function Contact() {
     // Simulate API call
     setTimeout(() => setStatus("success"), 1500);
   };
+
+  // Use dynamic data or fallback to defaults
+  const heading = contactData?.heading || "READY TO SCALE?";
+  const description = contactData?.description || "Currently accepting new projects for 2026. Whether it is a server-side overhaul or a high-fidelity frontend, let's build something exceptional.";
+  const email = contactData?.email || "timalsinasantosh19@gmail.com";
+  const location = contactData?.location || "KATHMANDU, NEPAL";
+  const socialLinks = contactData?.socialLinks || [
+    { name: "GitHub", url: "https://github.com", icon: "github" },
+    { name: "LinkedIn", url: "https://linkedin.com", icon: "linkedin" },
+    { name: "Twitter", url: "https://twitter.com", icon: "twitter" }
+  ];
+  const copyright = contactData?.copyright || "© 2026 Santosh Timalsina";
 
   return (
     /* Changed to bg-white and text-black */
@@ -28,10 +62,12 @@ export default function Contact() {
                 PROJECT INQUIRY 
               </span>
               <h2 className="text-[8vw] lg:text-[6vw] font-black leading-[0.9] tracking-tighter mb-12">
-                READY TO<br/>SCALE?
+                {heading.split('\n').map((line, i) => (
+                  <span key={i}>{line}<br/></span>
+                ))}
               </h2>
               <p className="text-xl text-zinc-500 max-w-md normal-case leading-tight mb-12">
-                Currently accepting new projects for 2026. Whether it is a server-side overhaul or a high-fidelity frontend, let's build something exceptional.
+                {description}
               </p>
             </div>
 
@@ -39,19 +75,19 @@ export default function Contact() {
               <div 
                 className="group cursor-pointer w-fit" 
                 onClick={() => {
-                  navigator.clipboard.writeText('timalsinasantosh19@gmail.com');
+                  navigator.clipboard.writeText(email);
                   alert("Email copied to clipboard!");
                 }}
               >
                 <span className="text-[10px] font-bold opacity-30 block mb-2">EMAIL_OFFICE</span>
                 <span className="text-2xl md:text-3xl font-black tracking-tight group-hover:text-green-600 transition-colors lowercase">
-                  timalsinasantosh19@gmail.com
+                  {email}
                 </span>
               </div>
               <div className="group">
                 <span className="text-[10px] font-bold opacity-30 block mb-2">LOCATION_BASE</span>
                 <span className="text-2xl md:text-3xl font-black tracking-tight">
-                  KATHMANDU, NEPAL
+                  {location}
                 </span>
               </div>
             </div>
@@ -129,17 +165,24 @@ export default function Contact() {
         {/* FOOTER SOCIALS */}
         <div className="mt-40 pt-10 border-t border-black/10 flex flex-wrap gap-12 justify-between items-center">
             <div className="flex gap-12">
-                {['GITHUB', 'LINKEDIN', 'TWITTER'].map((social) => (
-                    <a key={social} href="#" className="text-[10px] font-black tracking-[0.3em] text-black opacity-40 hover:opacity-100 hover:text-green-600 transition-all">
-                        {social}
+                {socialLinks.map((social) => (
+                    <a 
+                      key={social.name} 
+                      href={social.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[10px] font-black tracking-[0.3em] text-black opacity-40 hover:opacity-100 hover:text-green-600 transition-all"
+                    >
+                        {social.name.toUpperCase()}
                     </a>
                 ))}
             </div>
             <span className="text-[9px] font-mono opacity-20 uppercase tracking-widest text-black">
-                © 2026 Santosh Timalsina 
+                {copyright}
             </span>
         </div>
       </div>
     </section>
   );
 }
+

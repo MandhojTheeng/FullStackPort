@@ -3,16 +3,48 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FooterData } from "@/lib/admin-types";
 
-const footerLinks = [
-  { name: "About", href: "#about", desc: "The Architect" },
-  { name: "Projects", href: "#projects", desc: "Selected Works" },
-  { name: "Blog", href: "/blog", desc: "Insights & Thoughts" },
-  { name: "Contact", href: "#contact", desc: "Start Conversation" },
-];
+interface FooterProps {
+  footerData?: FooterData;
+}
 
-export default function Footer() {
+const defaultFooterData: FooterData = {
+  headingLine1: "TURNING",
+  headingLine2: "COMPLEX IDEAS",
+  headingLine3: "INTO REALITY",
+  availabilityText: "Available for Worldwide",
+  availabilitySubtext: "Remote & Freelance",
+  navLinks: [
+    { name: "About", href: "#about", desc: "The Architect" },
+    { name: "Projects", href: "#projects", desc: "Selected Works" },
+    { name: "Blog", href: "/blog", desc: "Insights & Thoughts" },
+    { name: "Contact", href: "#contact", desc: "Start Conversation" },
+  ],
+  socialLinks: [
+    { name: "GitHub", url: "https://github.com", icon: "github" },
+    { name: "LinkedIn", url: "https://linkedin.com", icon: "linkedin" },
+    { name: "Twitter", url: "https://twitter.com", icon: "twitter" },
+  ],
+  brandInitials: "ST",
+  copyright: "© {year} Santosh Timalsina",
+};
+
+export default function Footer({ footerData }: FooterProps) {
+  const data = footerData || defaultFooterData;
   const currentYear = new Date().getFullYear();
+  const copyrightText = data.copyright.replace("{year}", currentYear.toString());
+
+  // Get social initials for display
+  const getSocialInitials = (name: string) => {
+    switch (name.toLowerCase()) {
+      case "github": return "GH";
+      case "linkedin": return "LI";
+      case "twitter": return "TW";
+      case "instagram": return "IG";
+      default: return name.substring(0, 2).toUpperCase();
+    }
+  };
 
   return (
     <footer className="relative bg-[#020202] text-[#f0f0f0] pt-40 pb-10 px-6 md:px-12 selection:bg-emerald-500 selection:text-black overflow-hidden">
@@ -33,17 +65,17 @@ export default function Footer() {
               className="space-y-6"
             >
               <h3 className="text-4xl md:text-6xl font-light leading-[1.1] tracking-tight">
-                TURNING<br />
-                <span className="font-bold text-emerald-400 uppercase tracking-tight">COMPLEX IDEAS</span> <br />
-                INTO REALITY
+                {data.headingLine1}<br />
+                <span className="font-bold text-emerald-400 uppercase tracking-tight">{data.headingLine2}</span> <br />
+                {data.headingLine3}
               </h3>
               <div className="h-px w-24 bg-emerald-500/50" />
             </motion.div>
 
             <div className="grid grid-cols-2 gap-8 text-[11px] uppercase tracking-[0.22em] font-bold text-zinc-500">
               <div className="space-y-2">
-                <p>Available for Worldwide</p>
-                <p className="text-white/40">Remote & Freelance</p>
+                <p>{data.availabilityText}</p>
+                <p className="text-white/40">{data.availabilitySubtext}</p>
               </div>
             </div>
           </div>
@@ -51,7 +83,7 @@ export default function Footer() {
           <div className="flex flex-col items-start lg:items-end">
             <nav className="w-full max-w-md">
               <ul className="divide-y divide-white/10">
-                {footerLinks.map((item, idx) => (
+                {data.navLinks.map((item, idx) => (
                   <li key={item.name} className="group overflow-hidden">
                     <Link href={item.href} className="flex justify-between items-center py-8 group-hover:px-4 transition-all duration-500 ease-in-out">
                       <div className="relative">
@@ -78,25 +110,27 @@ export default function Footer() {
           <div className="flex items-center gap-6">
             <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.08]">
               <span className="text-sm font-semibold tracking-tight text-white">
-                ST
+                {data.brandInitials}
               </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-white">
-                © {currentYear} Santosh Timalsina
+                {copyrightText}
               </span>
               
             </div>
           </div>
 
           <div className="flex items-center gap-3 bg-white/[0.03] p-2 rounded-2xl border border-white/10">
-            {['GH', 'LI', 'TW', 'IG'].map((social) => (
+            {data.socialLinks.map((social) => (
               <a 
-                key={social} 
-                href="#" 
+                key={social.name} 
+                href={social.url} 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center text-[10px] font-bold rounded-xl border border-transparent hover:border-white/10 hover:bg-white/[0.08] hover:text-emerald-400 transition-all duration-300"
               >
-                {social}
+                {getSocialInitials(social.name)}
               </a>
             ))}
           </div>

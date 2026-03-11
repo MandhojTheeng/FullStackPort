@@ -11,14 +11,53 @@ interface HeroEditorProps {
 }
 
 export default function HeroEditor({ heroForm, setHeroForm, onSave, saving }: HeroEditorProps) {
+  // Ensure all required fields are present before saving
+  const getDataToSave = () => {
+    const stats = heroForm.stats || [];
+    const filledStats: Array<{ label: string; value: string }> = [];
+    for (let i = 0; i < 4; i++) {
+      filledStats.push({
+        label: stats[i]?.label || "",
+        value: stats[i]?.value || ""
+      });
+    }
+    
+    return {
+      headingLine1: heroForm.headingLine1 || "",
+      headingLine2: heroForm.headingLine2 || "",
+      headingLine3: heroForm.headingLine3 || "",
+      subtitle: heroForm.subtitle || "",
+      role: heroForm.role || "",
+      description: heroForm.description || "",
+      stats: filledStats,
+      ctaPrimary: heroForm.ctaPrimary || "",
+      ctaSecondary: heroForm.ctaSecondary || "",
+      ctaPrimaryLink: heroForm.ctaPrimaryLink || "",
+      ctaSecondaryLink: heroForm.ctaSecondaryLink || "",
+      image: heroForm.image || "",
+      socialLinks: heroForm.socialLinks || []
+    };
+  };
+
   // Handle stats change for the 4 fixed stats
   const handleStatsChange = (index: number, field: "label" | "value", newValue: string) => {
-    const newStats = [...heroForm.stats];
-    // Ensure we have 4 stats
-    while (newStats.length < 4) {
-      newStats.push({ label: "", value: "" });
+    const currentStats = heroForm.stats || [];
+    const newStats: Array<{ label: string; value: string }> = [];
+    
+    for (let i = 0; i < 4; i++) {
+      if (i === index) {
+        newStats.push({ 
+          label: field === "label" ? newValue : (currentStats[i]?.label || ""),
+          value: field === "value" ? newValue : (currentStats[i]?.value || "")
+        });
+      } else {
+        newStats.push({
+          label: currentStats[i]?.label || "",
+          value: currentStats[i]?.value || ""
+        });
+      }
     }
-    newStats[index] = { ...newStats[index], [field]: newValue };
+    
     setHeroForm({ ...heroForm, stats: newStats });
   };
 
@@ -105,84 +144,36 @@ export default function HeroEditor({ heroForm, setHeroForm, onSave, saving }: He
           <div className="space-y-4">
             <label className="block text-sm font-medium text-white/70">Stats (4 items)</label>
             <div className="grid md:grid-cols-2 gap-4">
-              {[
-                { label: "Core Stack", placeholder: "Node / React" },
-                { label: "Cloud", placeholder: "AWS / Docker" },
-                { label: "Performance", placeholder: "99+ Lighthouse" },
-                { label: "UI/UX", placeholder: "Framer / Figma" },
-              ].map((stat, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <span className="text-sm text-white/50 w-24 shrink-0">{stat.label}:</span>
-                  <input
-                    type="text"
-                    value={heroForm.stats[index]?.value || ""}
-                    onChange={(e) => handleStatsChange(index, "value", e.target.value)}
-                    className="flex-1 px-3 py-2 rounded-lg bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm text-white placeholder:text-white/30"
-                    placeholder={stat.placeholder}
-                  />
+              {[0, 1, 2, 3].map((index) => (
+                <div key={index} className="space-y-2 p-3 bg-white/5 rounded-lg border border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-white/50 w-16 shrink-0">Label:</span>
+                    <input
+                      type="text"
+                      value={heroForm.stats[index]?.label || ""}
+                      onChange={(e) => handleStatsChange(index, "label", e.target.value)}
+                      className="flex-1 px-2 py-1 rounded bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-xs text-white placeholder:text-white/30"
+                      placeholder="Stat Label"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-white/50 w-16 shrink-0">Value:</span>
+                    <input
+                      type="text"
+                      value={heroForm.stats[index]?.value || ""}
+                      onChange={(e) => handleStatsChange(index, "value", e.target.value)}
+                      className="flex-1 px-2 py-1 rounded bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-xs text-white placeholder:text-white/30"
+                      placeholder="Stat Value"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* CTAs */}
-          <div className="grid md:grid-cols-2 gap-4 lg:gap-6">
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Primary CTA Text</label>
-              <input
-                type="text"
-                value={heroForm.ctaPrimary}
-                onChange={(e) => setHeroForm({ ...heroForm, ctaPrimary: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Primary CTA Link</label>
-              <input
-                type="text"
-                value={heroForm.ctaPrimaryLink}
-                onChange={(e) => setHeroForm({ ...heroForm, ctaPrimaryLink: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 lg:gap-6">
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Secondary CTA Text</label>
-              <input
-                type="text"
-                value={heroForm.ctaSecondary}
-                onChange={(e) => setHeroForm({ ...heroForm, ctaSecondary: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Secondary CTA Link</label>
-              <input
-                type="text"
-                value={heroForm.ctaSecondaryLink}
-                onChange={(e) => setHeroForm({ ...heroForm, ctaSecondaryLink: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
-          </div>
-
-          {/* Image URL */}
-          <div>
-            <label className="block text-sm font-medium text-white/70 mb-2">Image URL</label>
-            <input
-              type="text"
-              value={heroForm.image}
-              onChange={(e) => setHeroForm({ ...heroForm, image: e.target.value })}
-              className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              placeholder="/profile.jpg"
-            />
-          </div>
-
           <button
             type="button"
-            onClick={() => onSave("hero", heroForm)}
+            onClick={() => onSave("hero", getDataToSave())}
             disabled={saving}
             className="w-full py-2.5 lg:py-3 bg-white text-black font-medium rounded-xl hover:bg-white/90 transition-all disabled:opacity-50 text-sm lg:text-base"
           >

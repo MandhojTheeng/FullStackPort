@@ -1,16 +1,13 @@
 "use client";
 
-import { Project, BlogPost } from "@/lib/admin-types";
 import { motion } from "framer-motion";
-import { FiPlus, FiArrowUpRight } from "react-icons/fi";
+import { FiArrowUpRight } from "react-icons/fi";
 
 interface DashboardProps {
-  projects: Project[];
-  blogPosts: BlogPost[];
-  onNavigate: (tab: "hero" | "projects" | "settings") => void;
+  onNavigate: (tab: "hero" | "about" | "contact" | "footer" | "settings") => void;
 }
 
-export default function Dashboard({ projects, blogPosts, onNavigate }: DashboardProps) {
+export default function Dashboard({ onNavigate }: DashboardProps) {
   return (
     <div className="min-h-screen bg-black text-white font-mono pt-16 selection:bg-white selection:text-black">
       <div className="p-6 lg:p-12 space-y-0">
@@ -25,27 +22,19 @@ export default function Dashboard({ projects, blogPosts, onNavigate }: Dashboard
               <span className="text-[10px] tracking-[0.5em] opacity-40 uppercase">Root Access Granted</span>
             </div>
           </div>
-          
-          <div className="flex flex-col justify-end items-start md:items-end">
-            <button 
-              onClick={() => onNavigate("projects")}
-              className="group flex items-center gap-4 border border-white p-6 hover:bg-white hover:text-black transition-all duration-500"
-            >
-              <span className="text-xs font-bold tracking-[0.3em] uppercase">Add New Project</span>
-              <FiPlus className="group-hover:rotate-90 transition-transform duration-500" />
-            </button>
-          </div>
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-3 border-b border-white/20">
-          <MetricBlock label="Project Count" value={projects.length} />
-          <MetricBlock label="Blog Entries" value={blogPosts.length} />
-          <MetricBlock label="Featured Flags" value={projects.filter(p => p.featured).length} />
+          <MetricBlock label="Status" value="ONLINE" />
+          <MetricBlock label="Mode" value="ACTIVE" />
+          <MetricBlock label="System" value="READY" />
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-3">
+        <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
           <Tile label="HERO CONFIG" onClick={() => onNavigate("hero")} />
-          <Tile label="PROJECT VAULT" onClick={() => onNavigate("projects")} />
+          <Tile label="ABOUT SECTION" onClick={() => onNavigate("about")} />
+          <Tile label="CONTACT SECTION" onClick={() => onNavigate("contact")} />
+          <Tile label="FOOTER SECTION" onClick={() => onNavigate("footer")} />
           <Tile label="SYSTEM SETTINGS" onClick={() => onNavigate("settings")} />
         </section>
 
@@ -69,14 +58,14 @@ export default function Dashboard({ projects, blogPosts, onNavigate }: Dashboard
   );
 }
 
-function MetricBlock({ label, value }: { label: string; value: number }) {
+function MetricBlock({ label, value }: { label: string; value: string }) {
   return (
     <div className="p-8 lg:p-12 border-r border-white/20 last:border-r-0 group">
       <p className="text-[10px] opacity-30 uppercase tracking-[0.4em] mb-8 group-hover:opacity-100 transition-opacity">
         {label}
       </p>
-      <p className="text-8xl lg:text-[10rem] font-black tracking-tighter leading-none">
-        {value.toString().padStart(2, '0')}
+      <p className="text-5xl lg:text-7xl font-black tracking-tighter leading-none">
+        {value}
       </p>
     </div>
   );
@@ -96,3 +85,4 @@ function Tile({ label, onClick }: { label: string; onClick: () => void }) {
     </motion.button>
   );
 }
+
