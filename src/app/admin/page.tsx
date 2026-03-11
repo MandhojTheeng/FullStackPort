@@ -10,7 +10,8 @@ import {
   AboutData,
   ContactData,
   FooterData,
-  Settings
+  Settings,
+  Project
 } from "@/lib/admin-types";
 
 // Components
@@ -20,6 +21,8 @@ import HeroEditor from "@/components/admin/HeroEditor";
 import AboutEditor from "@/components/admin/AboutEditor";
 import ContactEditor from "@/components/admin/ContactEditor";
 import FooterEditor from "@/components/admin/FooterEditor";
+import BlogEditor from "@/components/admin/BlogEditor";
+import ProjectEditor from "@/components/admin/ProjectEditor";
 import SettingsPanel from "@/components/admin/Settings";
 
 // Utility functions
@@ -41,6 +44,7 @@ export default function AdminDashboard() {
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
   const [contactData, setContactData] = useState<ContactData | null>(null);
   const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const [projectsData, setProjectsData] = useState<Project[]>([]);
 
   // Form states
   const [heroForm, setHeroForm] = useState<HeroData | null>(null);
@@ -101,6 +105,7 @@ export default function AdminDashboard() {
           setAboutData(contentData.about);
           setContactData(contentData.contact);
           setFooterData(contentData.footer);
+          setProjectsData(contentData.projects || []);
           setHeroForm(contentData.hero);
           setAboutForm(contentData.about);
           setContactForm(contentData.contact);
@@ -119,6 +124,7 @@ export default function AdminDashboard() {
       setAboutData(contentData.about);
       setContactData(contentData.contact);
       setFooterData(contentData.footer);
+      setProjectsData(contentData.projects || []);
       
       setHeroForm(contentData.hero);
       setAboutForm(contentData.about);
@@ -190,6 +196,9 @@ export default function AdminDashboard() {
       } else if (section === "footer") {
         setFooterData(data as FooterData);
         setFooterForm(data as FooterData);
+      } else if (section === "projects") {
+        const projectsData = (data as { projects: Project[] }).projects;
+        setProjectsData(projectsData);
       }
       
       // Update cache
@@ -305,6 +314,28 @@ export default function AdminDashboard() {
             footerData={footerData!}
             onSave={updateSection}
             saving={saving}
+          />
+        )}
+
+        {/* Blog Editor Tab */}
+        {activeTab === "blog" && (
+          <BlogEditor
+            onMessage={showMessageFn}
+            onSave={() => {}}
+            saving={saving}
+          />
+        )}
+
+        {/* Projects Editor Tab */}
+        {activeTab === "projects" && (
+          <ProjectEditor
+            onMessage={showMessageFn}
+            onSave={() => {
+              // Refresh projects data after save
+              loadAllData();
+            }}
+            saving={saving}
+            projects={projectsData}
           />
         )}
 

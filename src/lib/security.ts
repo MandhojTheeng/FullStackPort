@@ -190,15 +190,39 @@ export async function verifyPassword(password: string, stored: string): Promise<
 }
 
 // Check for SQL injection patterns (for file-based storage, this is additional protection)
+// Only flag actual SQL injection attempts, not common words like "where", "join", "or", "and"
 export function containsSqlInjectionPatterns(input: string): boolean {
-  const patterns = [
-    /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE)\b)/i,
-    /(\b(UNION|JOIN|WHERE)\b)/i,
-    /(--|\/\*|\*\/|;--)/,
-    /(\bOR\b.*\b=\b|\bAND\b.*\b=\b)/i,
+  // Skip short inputs that are likely not injection attempts
+  if (input.length < 3) return false;
+  
+  // Only flag if it looks like an actual SQL injection attempt:
+  // - Contains SQL keywords with punctuation (like "SELECT--", "UNION/*", etc.)
+  // - Contains multiple SQL keywords in suspicious combinations
+  // - Contains inline comments often used in SQL injection
+  
+  const dangerousPatterns = [
+    /(\bSELECT\b.*(--|\/\*|#))/i,           // SELECT with comment
+    /(\bUNION\b.*\bSELECT\b)/i,             // UNION SELECT
+    /(\bINSERT\b.*\bINTO\b)/i,              // INSERT INTO
+    /(\bDELETE\b.*\bFROM\b)/i,              // DELETE FROM
+    /(\bUPDATE\b.*\bSET\b)/i,               // UPDATE SET
+    /(\bDROP\b.*\bTABLE\b)/i,               // DROP TABLE
+    /(\bCREATE\b.*\bTABLE\b)/i,             // CREATE TABLE
+    /(\bALTER\b.*\bTABLE\b)/i,              // ALTER TABLE
+    /(;\s*(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER))/i,  // Multiple statements
+    /(\/\*!\d+\*\/)/,                       // MySQL comment injection
+    /(0x[0-9a-fA-F]+)/,                     // Hex encoding attempts
+    /(CHAR\s*\(\s*\d+\s*\))/i,             // CHAR encoding attempts
   ];
   
-  return patterns.some((pattern) => pattern.test(input));
+  // Check for dangerous patterns
+  if (dangerousPatterns.some((pattern) => pattern.test(input))) {
+    return true;
+  }
+  
+  // Only flag if there's clear evidence of SQL injection attempt
+  // Common words alone are not enough to flag
+  return false;
 }
 
 // Check for path traversal attempts

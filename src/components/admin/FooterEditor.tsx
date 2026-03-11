@@ -10,7 +10,6 @@ interface FooterEditorProps {
 }
 
 export default function FooterEditor({ footerData, onSave, saving }: FooterEditorProps) {
-  // Ensure we have default values even if footerData is undefined or missing properties
   const defaultFooterData: FooterData = {
     headingLine1: "",
     headingLine2: "",
@@ -30,7 +29,6 @@ export default function FooterEditor({ footerData, onSave, saving }: FooterEdito
     socialLinks: footerData.socialLinks || []
   } : defaultFooterData);
 
-  // Update form when footerData changes
   useEffect(() => {
     if (footerData) {
       setFormData({
@@ -98,208 +96,188 @@ export default function FooterEditor({ footerData, onSave, saving }: FooterEdito
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono pt-16">
-      <div className="p-6 lg:p-12">
-        <div className="max-w-4xl mx-auto">
-          <header className="mb-12">
-            <h1 className="text-4xl font-black tracking-tighter mb-4">FOOTER SECTION</h1>
-            <p className="text-zinc-400">Edit the footer section content</p>
-          </header>
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
+      <div className="max-w-[1600px] mx-auto px-8 py-16 lg:px-16">
+        
+        <header className="flex flex-col lg:flex-row justify-between items-end border-b border-white mb-24 pb-12 gap-8">
+          <div>
+            <h1 className="text-[18vw] lg:text-[180px] font-black leading-[0.75] tracking-tighter uppercase">
+              FOOTER
+            </h1>
+            <p className="text-[10px] font-black tracking-[0.5em] uppercase mt-6 opacity-50">
+              Terminal / Global / Navigation
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Heading Lines */}
-            <div className="space-y-4">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Heading Lines
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input
-                  type="text"
-                  value={formData.headingLine1}
-                  onChange={(e) => handleChange("headingLine1", e.target.value)}
-                  placeholder="Line 1 (e.g., TURNING)"
-                  className="bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                />
-                <input
-                  type="text"
-                  value={formData.headingLine2}
-                  onChange={(e) => handleChange("headingLine2", e.target.value)}
-                  placeholder="Line 2 (e.g., COMPLEX IDEAS)"
-                  className="bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                />
-                <input
-                  type="text"
-                  value={formData.headingLine3}
-                  onChange={(e) => handleChange("headingLine3", e.target.value)}
-                  placeholder="Line 3 (e.g., INTO REALITY)"
-                  className="bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
+          <button
+            onClick={handleSubmit}
+            disabled={saving}
+            className="w-full lg:w-80 h-24 bg-white text-black hover:invert transition-all duration-500 flex items-center justify-center disabled:opacity-20"
+          >
+            <span className="text-xs font-black tracking-[0.4em] uppercase">
+              {saving ? "SAVING..." : "COMMIT CHANGES"}
+            </span>
+          </button>
+        </header>
 
-            {/* Availability Section */}
-            <div className="space-y-4">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Availability Section
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  value={formData.availabilityText}
-                  onChange={(e) => handleChange("availabilityText", e.target.value)}
-                  placeholder="Available for Worldwide"
-                  className="bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                />
-                <input
-                  type="text"
-                  value={formData.availabilitySubtext}
-                  onChange={(e) => handleChange("availabilitySubtext", e.target.value)}
-                  placeholder="Remote & Freelance"
-                  className="bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
-
-            {/* Brand Initials */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Brand Initials
-              </label>
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/20 border border-white/20 mb-24">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-black p-12">
+              <label className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 mb-8 block">Heading Line 0{i}</label>
               <input
                 type="text"
-                value={formData.brandInitials}
-                onChange={(e) => handleChange("brandInitials", e.target.value)}
-                placeholder="ST"
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-lg font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
+                value={(formData as any)[`headingLine${i}`]}
+                onChange={(e) => handleChange(`headingLine${i}` as keyof FooterData, e.target.value.toUpperCase())}
+                placeholder={`LINE 0${i}`}
+                className="bg-transparent text-4xl lg:text-5xl font-black tracking-tighter outline-none w-full"
               />
             </div>
+          ))}
+        </section>
 
-            {/* Copyright */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Copyright Text
-              </label>
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/20 border border-white/20 mb-24">
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-px bg-white/20">
+            <div className="bg-black p-12">
+              <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Availability Primary</label>
               <input
                 type="text"
-                value={formData.copyright}
-                onChange={(e) => handleChange("copyright", e.target.value)}
-                placeholder="© {year} Your Name. All rights reserved"
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-lg font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
+                value={formData.availabilityText}
+                onChange={(e) => handleChange("availabilityText", e.target.value)}
+                className="bg-transparent text-2xl font-black outline-none w-full uppercase"
               />
             </div>
-
-            {/* Navigation Links */}
-            <div className="space-y-4">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Navigation Links
-              </label>
-              
-              <div className="space-y-3">
-                {formData.navLinks.map((link, index) => (
-                  <div key={index} className="flex gap-3 items-center">
-                    <input
-                      type="text"
-                      value={link.name}
-                      onChange={(e) => handleNavLinkChange(index, "name", e.target.value)}
-                      placeholder="Name"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={link.href}
-                      onChange={(e) => handleNavLinkChange(index, "href", e.target.value)}
-                      placeholder="href (e.g., #about)"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={link.desc}
-                      onChange={(e) => handleNavLinkChange(index, "desc", e.target.value)}
-                      placeholder="Description"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveNavLink(index)}
-                      className="px-4 py-3 bg-red-900/30 text-red-500 hover:bg-red-900/50 transition-colors font-bold text-sm"
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleAddNavLink}
-                className="px-6 py-3 bg-green-900/30 text-green-500 hover:bg-green-900/50 transition-colors font-bold text-sm"
-              >
-                + ADD NAVIGATION LINK
-              </button>
+            <div className="bg-black p-12">
+              <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Availability Meta</label>
+              <input
+                type="text"
+                value={formData.availabilitySubtext}
+                onChange={(e) => handleChange("availabilitySubtext", e.target.value)}
+                className="bg-transparent text-2xl font-black outline-none w-full uppercase"
+              />
             </div>
+          </div>
+          <div className="lg:col-span-4 bg-zinc-950 p-12 border-l border-white/20">
+            <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Brand Initials</label>
+            <input
+              type="text"
+              value={formData.brandInitials}
+              onChange={(e) => handleChange("brandInitials", e.target.value.toUpperCase())}
+              className="bg-transparent text-6xl font-black tracking-tighter outline-none w-full"
+            />
+          </div>
+        </section>
 
-            {/* Social Links */}
-            <div className="space-y-4">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Social Links
-              </label>
-              
-              <div className="space-y-3">
-                {formData.socialLinks.map((link, index) => (
-                  <div key={index} className="flex gap-3 items-center">
-                    <input
-                      type="text"
-                      value={link.name}
-                      onChange={(e) => handleSocialLinkChange(index, "name", e.target.value)}
-                      placeholder="Name (e.g., GitHub)"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={link.url}
-                      onChange={(e) => handleSocialLinkChange(index, "url", e.target.value)}
-                      placeholder="URL (e.g., https://github.com)"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={link.icon}
-                      onChange={(e) => handleSocialLinkChange(index, "icon", e.target.value)}
-                      placeholder="Icon (e.g., github)"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSocialLink(index)}
-                      className="px-4 py-3 bg-red-900/30 text-red-500 hover:bg-red-900/50 transition-colors font-bold text-sm"
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleAddSocialLink}
-                className="px-6 py-3 bg-green-900/30 text-green-500 hover:bg-green-900/50 transition-colors font-bold text-sm"
-              >
-                + ADD SOCIAL LINK
-              </button>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={saving}
-              className="w-full py-6 bg-white text-black font-black text-lg tracking-[0.2em] hover:bg-green-600 hover:text-white hover:shadow-[0_0_20px_rgba(34,197,94,0.5)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        <div className="mb-24">
+          <div className="flex justify-between items-end mb-8">
+            <h3 className="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">Internal Navigation</h3>
+            <button 
+              type="button" 
+              onClick={handleAddNavLink}
+              className="text-[10px] font-black tracking-widest border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all"
             >
-              {saving ? "SAVING..." : "SAVE CHANGES"}
+              + ADD LINK
             </button>
-          </form>
+          </div>
+          <div className="grid grid-cols-1 gap-px bg-white/20 border border-white/20">
+            {formData.navLinks.map((link, index) => (
+              <div key={index} className="bg-black p-8 flex flex-col lg:flex-row gap-8 items-center group">
+                <input
+                  type="text"
+                  value={link.name}
+                  onChange={(e) => handleNavLinkChange(index, "name", e.target.value.toUpperCase())}
+                  placeholder="NAME"
+                  className="bg-transparent text-2xl font-black tracking-tighter outline-none w-full lg:w-1/4"
+                />
+                <input
+                  type="text"
+                  value={link.href}
+                  onChange={(e) => handleNavLinkChange(index, "href", e.target.value)}
+                  placeholder="HREF"
+                  className="bg-transparent text-sm font-medium opacity-40 focus:opacity-100 outline-none w-full lg:w-1/4"
+                />
+                <input
+                  type="text"
+                  value={link.desc}
+                  onChange={(e) => handleNavLinkChange(index, "desc", e.target.value)}
+                  placeholder="DESCRIPTION"
+                  className="bg-transparent text-sm font-medium opacity-40 focus:opacity-100 outline-none flex-1"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveNavLink(index)}
+                  className="text-xs font-black opacity-0 group-hover:opacity-100 transition-opacity text-white/40 hover:text-white"
+                >
+                  REMOVE
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="mb-24">
+          <div className="flex justify-between items-end mb-8">
+            <h3 className="text-[10px] font-black tracking-[0.5em] uppercase opacity-40">Social Connect</h3>
+            <button 
+              type="button" 
+              onClick={handleAddSocialLink}
+              className="text-[10px] font-black tracking-widest border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all"
+            >
+              + ADD SOCIAL
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/20 border border-white/20">
+            {formData.socialLinks.map((link, index) => (
+              <div key={index} className="bg-black p-10 relative group">
+                <div className="flex justify-between mb-8">
+                   <input
+                    type="text"
+                    value={link.name}
+                    onChange={(e) => handleSocialLinkChange(index, "name", e.target.value.toUpperCase())}
+                    placeholder="PLATFORM"
+                    className="bg-transparent text-lg font-black tracking-tighter outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSocialLink(index)}
+                    className="text-[10px] font-black opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    [X]
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={link.url}
+                  onChange={(e) => handleSocialLinkChange(index, "url", e.target.value)}
+                  placeholder="URL"
+                  className="bg-transparent text-xs font-medium opacity-40 focus:opacity-100 outline-none w-full mb-4"
+                />
+                <input
+                  type="text"
+                  value={link.icon}
+                  onChange={(e) => handleSocialLinkChange(index, "icon", e.target.value)}
+                  placeholder="ICON ID"
+                  className="bg-transparent text-[10px] font-black tracking-[0.2em] outline-none w-full"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <section className="bg-black p-12 border border-white/20 mb-24">
+          <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Legal Copyright String</label>
+          <input
+            type="text"
+            value={formData.copyright}
+            onChange={(e) => handleChange("copyright", e.target.value)}
+            className="bg-transparent text-xl font-medium outline-none w-full"
+          />
+        </section>
+
+        <footer className="mt-32 pt-12 border-t border-white/20 flex justify-between items-center opacity-40 pb-20">
+          <span className="text-[10px] font-black tracking-[0.2em]">FOOTER ADMIN MODULE</span>
+          <span className="text-[10px] font-black tracking-[0.5em] uppercase">Noir Framework 2026</span>
+        </footer>
       </div>
     </div>
   );
 }
-

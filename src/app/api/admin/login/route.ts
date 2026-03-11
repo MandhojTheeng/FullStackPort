@@ -11,20 +11,81 @@ import {
 } from "@/lib/security";
 
 const dataFilePath = path.join(process.cwd(), "data", "blogs.json");
+const tokensFilePath = path.join(process.cwd(), "data", "tokens.json");
 
 // Session token expiry (24 hours)
 const SESSION_EXPIRY = 24 * 60 * 60 * 1000;
 
-// Token store - using global to share across routes
-declare global {
-  var tokenStore: Map<string, { username: string; expiresAt: number }> | undefined;
+// Token store interface
+interface TokenStore {
+  [token: string]: {
+    username: string;
+    expiresAt: number;
+  };
 }
 
-function getTokenStore(): Map<string, { username: string; expiresAt: number }> {
-  if (!global.tokenStore) {
-    global.tokenStore = new Map();
+// Read tokens from file
+function readTokens(): TokenStore {
+  try {
+    if (fs.existsSync(tokensFilePath)) {
+      const data = fs.readFileSync(tokensFilePath, "utf-8");
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error("Error reading tokens file:", error);
   }
-  return global.tokenStore;
+  return {};
+}
+
+// Write tokens to file
+function writeTokens(tokens: TokenStore): void {
+  try {
+    fs.writeFileSync(tokensFilePath, JSON.stringify(tokens, null, 2));
+  } catch (error) {
+    console.error("Error writing tokens file:", error);
+  }
+}
+
+// In-memory cache for performance (sync with file on startup)
+let tokenCache: TokenStore = readTokens();
+
+// Get token store (file-based with memory cache)
+function getTokenStore(): TokenStore {
+  return tokenCache;
+}
+
+// Save token to store (both cache and file)
+function saveToken(token: string, data: { username: string; expiresAt: number }): void {
+  tokenCache[token] = data;
+  writeTokens(tokenCache);
+}
+
+// Remove token from store (both cache and file)
+function removeToken(token: string): void {
+  delete tokenCache[token];
+  writeTokens(tokenCache);
+}
+
+// Validate token
+function isTokenValid(token: string): boolean {
+  const store = getTokenStore();
+  const tokenData = store[token];
+  
+  if (!tokenData) {
+    // Also check for legacy tokens for backward compatibility
+    if (token === "admin-session-token" || token === "dev-admin-token-12345") {
+      return true;
+    }
+    return false;
+  }
+  
+  // Check if token is expired
+  if (Date.now() > tokenData.expiresAt) {
+    removeToken(token);
+    return false;
+  }
+  
+  return true;
 }
 
 interface BlogData {
@@ -48,10 +109,19 @@ function writeBlogData(data: BlogData): void {
 setInterval(() => {
   const now = Date.now();
   const store = getTokenStore();
-  for (const [token, data] of store.entries()) {
-    if (now > data.expiresAt) {
-      store.delete(token);
+  const tokensToRemove: string[] = [];
+  
+  for (const token in store) {
+    if (now > store[token].expiresAt) {
+      tokensToRemove.push(token);
     }
+  }
+  
+  tokensToRemove.forEach(token => removeToken(token));
+  
+  // Write cleaned tokens to file
+  if (tokensToRemove.length > 0) {
+    writeTokens(tokenCache);
   }
 }, 60 * 60 * 1000); // Every hour
 
@@ -135,9 +205,8 @@ export async function POST(request: NextRequest) {
     const sessionToken = generateSecureToken(64);
     const expiresAt = Date.now() + SESSION_EXPIRY;
 
-    // Store token in shared token store
-    const store = getTokenStore();
-    store.set(sessionToken, {
+    // Store token in file-based token store
+    saveToken(sessionToken, {
       username: data.admin.username,
       expiresAt,
     });
@@ -185,19 +254,8 @@ export async function PUT(request: NextRequest) {
 
     const token = authHeader.replace("Bearer ", "");
     
-    // Validate token exists and is not expired
-    const store = getTokenStore();
-    const tokenData = store.get(token);
-    
-    let isValid = false;
-    if (tokenData && Date.now() <= tokenData.expiresAt) {
-      isValid = true;
-    } else if (token === "admin-session-token") {
-      // Backward compatibility
-      isValid = true;
-    }
-    
-    if (!isValid) {
+    // Validate token using the new validation function
+    if (!isTokenValid(token)) {
       return NextResponse.json(
         { error: "Session expired. Please login again." },
         { status: 401, headers: getSecurityHeaders() }
@@ -276,9 +334,8 @@ export async function DELETE(request: NextRequest) {
 
     const token = authHeader.replace("Bearer ", "");
     
-    // Invalidate token
-    const store = getTokenStore();
-    store.delete(token);
+    // Invalidate token (remove from file-based store)
+    removeToken(token);
 
     return NextResponse.json({
       success: true,

@@ -19,13 +19,13 @@ export default function ContactEditor({ contactData, onSave, saving }: ContactEd
     copyright: ""
   });
 
-  // Update form when contactData changes
+  const [newSocialLink, setNewSocialLink] = useState({ name: "", url: "", icon: "" });
+
   useEffect(() => {
     if (contactData) {
       setFormData(contactData);
     }
   }, [contactData]);
-  const [newSocialLink, setNewSocialLink] = useState({ name: "", url: "", icon: "" });
 
   const handleChange = (field: keyof ContactData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -63,166 +63,168 @@ export default function ContactEditor({ contactData, onSave, saving }: ContactEd
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono pt-16">
-      <div className="p-6 lg:p-12">
-        <div className="max-w-4xl mx-auto">
-          <header className="mb-12">
-            <h1 className="text-4xl font-black tracking-tighter mb-4">CONTACT SECTION</h1>
-            <p className="text-zinc-400">Edit the contact section content</p>
-          </header>
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
+      <div className="max-w-[1600px] mx-auto px-8 py-16 lg:px-16">
+        
+        <header className="flex flex-col lg:flex-row justify-between items-end border-b border-white mb-24 pb-12 gap-8">
+          <div>
+            <h1 className="text-[18vw] lg:text-[180px] font-black leading-[0.75] tracking-tighter uppercase">
+              CONTACT
+            </h1>
+            <p className="text-[10px] font-black tracking-[0.5em] uppercase mt-6 opacity-50">
+              Communication / Outreach / Connection
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Heading */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Heading
-              </label>
-              <input
-                type="text"
-                value={formData.heading}
-                onChange={(e) => handleChange("heading", e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-xl font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
+          <button
+            onClick={handleSubmit}
+            disabled={saving}
+            className="w-full lg:w-80 h-24 bg-white text-black hover:invert transition-all duration-500 flex items-center justify-center disabled:opacity-20"
+          >
+            <span className="text-xs font-black tracking-[0.4em] uppercase">
+              {saving ? "TRANSMITTING..." : "COMMIT CHANGES"}
+            </span>
+          </button>
+        </header>
 
-            {/* Description */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Description
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => handleChange("description", e.target.value)}
-                rows={4}
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-lg font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors resize-none"
-              />
-            </div>
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/20 border border-white/20 mb-24">
+          <div className="lg:col-span-7 bg-black p-12">
+            <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-8 block">Inquiry Heading</label>
+            <input
+              type="text"
+              value={formData.heading}
+              onChange={(e) => handleChange("heading", e.target.value.toUpperCase())}
+              className="bg-transparent text-5xl lg:text-7xl font-black tracking-tighter outline-none w-full"
+              placeholder="LET'S TALK"
+            />
+          </div>
+          <div className="lg:col-span-5 bg-zinc-950 p-12">
+            <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-8 block">Project Brief Description</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleChange("description", e.target.value)}
+              rows={4}
+              className="bg-transparent text-xl font-medium leading-tight outline-none w-full resize-none"
+              placeholder="Describe the call to action..."
+            />
+          </div>
+        </section>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-xl font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/20 border border-white/20 mb-24">
+          <div className="bg-black p-12 group">
+            <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Direct Email</label>
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+              className="bg-transparent text-3xl font-black outline-none w-full hover:pl-4 transition-all"
+              placeholder="EMAIL@DOMAIN.COM"
+            />
+          </div>
+          <div className="bg-black p-12 group">
+            <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Current Location</label>
+            <input
+              type="text"
+              value={formData.location}
+              onChange={(e) => handleChange("location", e.target.value.toUpperCase())}
+              className="bg-transparent text-3xl font-black outline-none w-full hover:pl-4 transition-all"
+              placeholder="CITY, COUNTRY"
+            />
+          </div>
+        </section>
 
-            {/* Location */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Location
-              </label>
-              <input
-                type="text"
-                value={formData.location}
-                onChange={(e) => handleChange("location", e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-xl font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
-
-            {/* Copyright */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Copyright Text
-              </label>
-              <input
-                type="text"
-                value={formData.copyright}
-                onChange={(e) => handleChange("copyright", e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 text-lg font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
-
-            {/* Social Links */}
-            <div className="space-y-4">
-              <label className="text-xs font-bold tracking-[0.3em] text-zinc-500 uppercase">
-                Social Links
-              </label>
-              
-              <div className="space-y-3">
-                {formData.socialLinks.map((link, index) => (
-                  <div key={index} className="flex gap-3 items-center">
-                    <input
-                      type="text"
-                      value={link.name}
-                      onChange={(e) => handleSocialLinkChange(index, "name", e.target.value)}
-                      placeholder="Name (e.g., GitHub)"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="url"
-                      value={link.url}
-                      onChange={(e) => handleSocialLinkChange(index, "url", e.target.value)}
-                      placeholder="URL"
-                      className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={link.icon}
-                      onChange={(e) => handleSocialLinkChange(index, "icon", e.target.value)}
-                      placeholder="Icon"
-                      className="w-24 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSocialLink(index)}
-                      className="px-4 py-3 bg-red-900/30 text-red-500 hover:bg-red-900/50 transition-colors font-bold text-sm"
-                    >
-                      REMOVE
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              {/* Add new social link */}
-              <div className="flex gap-3 items-center pt-4 border-t border-zinc-800">
+        <div className="mb-24">
+          <h3 className="text-[10px] font-black tracking-[0.5em] uppercase mb-8 opacity-40">Digital Presence</h3>
+          
+          <div className="grid grid-cols-1 gap-px bg-white/20 border border-white/20 mb-px">
+            {formData.socialLinks.map((link, index) => (
+              <div key={index} className="bg-black p-8 flex flex-col lg:flex-row gap-8 items-center group">
                 <input
                   type="text"
-                  value={newSocialLink.name}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="New social name"
-                  className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
+                  value={link.name}
+                  onChange={(e) => handleSocialLinkChange(index, "name", e.target.value.toUpperCase())}
+                  placeholder="PLATFORM"
+                  className="bg-transparent text-2xl font-black tracking-tighter outline-none w-full lg:w-1/4"
                 />
                 <input
                   type="url"
-                  value={newSocialLink.url}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, url: e.target.value }))}
-                  placeholder="New social URL"
-                  className="flex-1 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
+                  value={link.url}
+                  onChange={(e) => handleSocialLinkChange(index, "url", e.target.value)}
+                  placeholder="URL ENDPOINT"
+                  className="bg-transparent text-sm font-medium opacity-40 focus:opacity-100 outline-none w-full lg:w-1/3"
                 />
                 <input
                   type="text"
-                  value={newSocialLink.icon}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, icon: e.target.value }))}
-                  placeholder="Icon"
-                  className="w-24 bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm font-bold tracking-tight focus:outline-none focus:border-blue-500 transition-colors"
+                  value={link.icon}
+                  onChange={(e) => handleSocialLinkChange(index, "icon", e.target.value)}
+                  placeholder="ICON ID"
+                  className="bg-transparent text-[10px] font-black tracking-[0.2em] outline-none flex-1"
                 />
                 <button
                   type="button"
-                  onClick={handleAddSocialLink}
-                  className="px-6 py-3 bg-green-900/30 text-green-500 hover:bg-green-900/50 transition-colors font-bold text-sm"
+                  onClick={() => handleRemoveSocialLink(index)}
+                  className="text-xs font-black opacity-0 group-hover:opacity-100 transition-opacity text-white/40 hover:text-white"
                 >
-                  ADD
+                  REMOVE
                 </button>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Submit Button */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/20 border-x border-b border-white/20">
+            <div className="lg:col-span-3 bg-zinc-900/50 p-6">
+              <input
+                type="text"
+                value={newSocialLink.name}
+                onChange={(e) => setNewSocialLink(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="NEW_NAME"
+                className="bg-transparent text-xs font-black tracking-widest outline-none w-full"
+              />
+            </div>
+            <div className="lg:col-span-5 bg-zinc-900/50 p-6 border-l border-white/20">
+              <input
+                type="url"
+                value={newSocialLink.url}
+                onChange={(e) => setNewSocialLink(prev => ({ ...prev, url: e.target.value }))}
+                placeholder="NEW_URL"
+                className="bg-transparent text-xs font-medium outline-none w-full"
+              />
+            </div>
+            <div className="lg:col-span-2 bg-zinc-900/50 p-6 border-l border-white/20">
+              <input
+                type="text"
+                value={newSocialLink.icon}
+                onChange={(e) => setNewSocialLink(prev => ({ ...prev, icon: e.target.value }))}
+                placeholder="ICON"
+                className="bg-transparent text-xs font-black outline-none w-full"
+              />
+            </div>
             <button
-              type="submit"
-              disabled={saving}
-              className="w-full py-6 bg-white text-black font-black text-lg tracking-[0.2em] hover:bg-green-600 hover:text-white hover:shadow-[0_0_20px_rgba(34,197,94,0.5)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              type="button"
+              onClick={handleAddSocialLink}
+              className="lg:col-span-2 bg-white text-black font-black text-[10px] tracking-widest uppercase hover:invert transition-all"
             >
-              {saving ? "SAVING..." : "SAVE CHANGES"}
+              ADD NEW
             </button>
-          </form>
+          </div>
         </div>
+
+        <section className="bg-black p-12 border border-white/20 mb-24">
+          <label className="text-[10px] font-black tracking-[0.4em] opacity-30 mb-6 block">Legal Statement</label>
+          <input
+            type="text"
+            value={formData.copyright}
+            onChange={(e) => handleChange("copyright", e.target.value)}
+            className="bg-transparent text-xl font-medium outline-none w-full"
+            placeholder="© 2026 ALL RIGHTS RESERVED"
+          />
+        </section>
+
+        <footer className="mt-32 pt-12 border-t border-white/20 flex justify-between items-center opacity-40 pb-20">
+          <span className="text-[10px] font-black tracking-[0.2em]">CONTACT ADMIN INTERFACE</span>
+          <span className="text-[10px] font-black tracking-[0.5em] uppercase">SYSTEM ACTIVE</span>
+        </footer>
       </div>
     </div>
   );
 }
-

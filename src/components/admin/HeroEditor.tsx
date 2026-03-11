@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { HeroData } from "@/lib/admin-types";
 
 interface HeroEditorProps {
@@ -11,177 +12,121 @@ interface HeroEditorProps {
 }
 
 export default function HeroEditor({ heroForm, setHeroForm, onSave, saving }: HeroEditorProps) {
-  // Ensure all required fields are present before saving
-  const getDataToSave = () => {
-    const stats = heroForm.stats || [];
-    const filledStats: Array<{ label: string; value: string }> = [];
-    for (let i = 0; i < 4; i++) {
-      filledStats.push({
-        label: stats[i]?.label || "",
-        value: stats[i]?.value || ""
-      });
-    }
-    
-    return {
-      headingLine1: heroForm.headingLine1 || "",
-      headingLine2: heroForm.headingLine2 || "",
-      headingLine3: heroForm.headingLine3 || "",
-      subtitle: heroForm.subtitle || "",
-      role: heroForm.role || "",
-      description: heroForm.description || "",
-      stats: filledStats,
-      ctaPrimary: heroForm.ctaPrimary || "",
-      ctaSecondary: heroForm.ctaSecondary || "",
-      ctaPrimaryLink: heroForm.ctaPrimaryLink || "",
-      ctaSecondaryLink: heroForm.ctaSecondaryLink || "",
-      image: heroForm.image || "",
-      socialLinks: heroForm.socialLinks || []
-    };
-  };
-
-  // Handle stats change for the 4 fixed stats
+  
   const handleStatsChange = (index: number, field: "label" | "value", newValue: string) => {
-    const currentStats = heroForm.stats || [];
-    const newStats: Array<{ label: string; value: string }> = [];
-    
-    for (let i = 0; i < 4; i++) {
-      if (i === index) {
-        newStats.push({ 
-          label: field === "label" ? newValue : (currentStats[i]?.label || ""),
-          value: field === "value" ? newValue : (currentStats[i]?.value || "")
-        });
-      } else {
-        newStats.push({
-          label: currentStats[i]?.label || "",
-          value: currentStats[i]?.value || ""
-        });
-      }
-    }
-    
+    const newStats = [...(heroForm.stats || [])];
+    while (newStats.length < 4) newStats.push({ label: "", value: "" });
+    newStats[index] = { ...newStats[index], [field]: newValue };
     setHeroForm({ ...heroForm, stats: newStats });
   };
 
   return (
-    <div>
-      <h1 className="text-2xl lg:text-3xl font-bold text-white mb-6 lg:mb-8">Hero Section</h1>
-      
-      <div className="bg-black border border-white/10 rounded-2xl p-4 lg:p-6">
-        <form className="space-y-4 lg:space-y-6">
-          {/* Heading Lines */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white">Heading</h3>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-2">Line 1</label>
-                <input
-                  type="text"
-                  value={heroForm.headingLine1}
-                  onChange={(e) => setHeroForm({ ...heroForm, headingLine1: e.target.value })}
-                  className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-                  placeholder="ARCHITECTING"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-2">Line 2</label>
-                <input
-                  type="text"
-                  value={heroForm.headingLine2}
-                  onChange={(e) => setHeroForm({ ...heroForm, headingLine2: e.target.value })}
-                  className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-                  placeholder="DIGITAL"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-2">Line 3</label>
-                <input
-                  type="text"
-                  value={heroForm.headingLine3}
-                  onChange={(e) => setHeroForm({ ...heroForm, headingLine3: e.target.value })}
-                  className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-                  placeholder="SYSTEMS."
-                />
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
+      {/* THIN TOP ACCENT */}
+      <div className="h-[1px] w-full bg-white/20 fixed top-0 left-0 z-50" />
 
-          {/* Subtitle and Role */}
-          <div className="grid md:grid-cols-2 gap-4 lg:gap-6">
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Subtitle</label>
-              <input
-                type="text"
-                value={heroForm.subtitle}
-                onChange={(e) => setHeroForm({ ...heroForm, subtitle: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-                placeholder="Full Stack Developer"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Role</label>
-              <input
-                type="text"
-                value={heroForm.role}
-                onChange={(e) => setHeroForm({ ...heroForm, role: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-                placeholder="Systems Engineer"
-              />
-            </div>
-          </div>
-
-          {/* Description */}
+      <div className="max-w-[1600px] mx-auto px-8 py-16 lg:px-16">
+        
+        {/* HEADER: MASSIVE & STATIC */}
+        <header className="flex flex-col lg:flex-row justify-between items-end border-b border-white mb-24 pb-12 gap-8">
           <div>
-            <label className="block text-sm font-medium text-white/70 mb-2">Description</label>
-            <textarea
-              value={heroForm.description}
-              onChange={(e) => setHeroForm({ ...heroForm, description: e.target.value })}
-              rows={3}
-              className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all resize-none text-sm lg:text-base text-white placeholder:text-white/30"
-              placeholder="I build high-performance web environments..."
-            />
-          </div>
-
-          {/* Stats Grid - 4 Fixed Items */}
-          <div className="space-y-4">
-            <label className="block text-sm font-medium text-white/70">Stats (4 items)</label>
-            <div className="grid md:grid-cols-2 gap-4">
-              {[0, 1, 2, 3].map((index) => (
-                <div key={index} className="space-y-2 p-3 bg-white/5 rounded-lg border border-white/10">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-white/50 w-16 shrink-0">Label:</span>
-                    <input
-                      type="text"
-                      value={heroForm.stats[index]?.label || ""}
-                      onChange={(e) => handleStatsChange(index, "label", e.target.value)}
-                      className="flex-1 px-2 py-1 rounded bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-xs text-white placeholder:text-white/30"
-                      placeholder="Stat Label"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-white/50 w-16 shrink-0">Value:</span>
-                    <input
-                      type="text"
-                      value={heroForm.stats[index]?.value || ""}
-                      onChange={(e) => handleStatsChange(index, "value", e.target.value)}
-                      className="flex-1 px-2 py-1 rounded bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-xs text-white placeholder:text-white/30"
-                      placeholder="Stat Value"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h1 className="text-[18vw] lg:text-[180px] font-black leading-[0.75] tracking-tighter">
+              HERO
+            </h1>
+            <p className="text-[10px] font-bold tracking-[0.5em] uppercase mt-6 opacity-50">
+              System / Core / Configuration
+            </p>
           </div>
 
           <button
-            type="button"
-            onClick={() => onSave("hero", getDataToSave())}
+            onClick={() => onSave("hero", heroForm)}
             disabled={saving}
-            className="w-full py-2.5 lg:py-3 bg-white text-black font-medium rounded-xl hover:bg-white/90 transition-all disabled:opacity-50 text-sm lg:text-base"
+            className="w-full lg:w-80 h-24 bg-white text-black hover:invert transition-all duration-500 flex items-center justify-center disabled:opacity-20"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            <span className="text-xs font-black tracking-[0.4em] uppercase">
+              {saving ? "EXECUTING..." : "COMMIT CHANGES"}
+            </span>
           </button>
-        </form>
+        </header>
+
+        {/* METRICS: BOLD BOXES */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/20 border border-white/20 mb-24">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="bg-black p-10 hover:bg-zinc-900 transition-colors">
+              <input 
+                value={heroForm.stats[i]?.label || ""}
+                onChange={(e) => handleStatsChange(i, "label", e.target.value.toUpperCase())}
+                placeholder="TAG"
+                className="bg-transparent text-[10px] font-black tracking-[0.3em] uppercase mb-16 outline-none w-full placeholder:opacity-20"
+              />
+              <input 
+                value={heroForm.stats[i]?.value || ""}
+                onChange={(e) => handleStatsChange(i, "value", e.target.value.toUpperCase())}
+                placeholder="00"
+                className="bg-transparent text-7xl font-black tracking-tighter outline-none w-full"
+              />
+            </div>
+          ))}
+        </section>
+
+        {/* PRIMARY EDITING: GRID SYSTEM */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/20 border border-white/20">
+          
+          {/* Main Titles */}
+          <div className="lg:col-span-8 bg-black divide-y divide-white/20">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="p-12 group">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-30 mb-6 block">Line_0{num}</label>
+                <input 
+                  value={(heroForm as any)[`headingLine${num}`]}
+                  onChange={(e) => setHeroForm({...heroForm, [`headingLine${num}`]: e.target.value.toUpperCase()})}
+                  className="bg-transparent text-5xl md:text-7xl font-black tracking-tighter outline-none w-full hover:pl-4 transition-all"
+                  placeholder="---"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Sidebar Data */}
+          <div className="lg:col-span-4 bg-black flex flex-col divide-y divide-white/20 border-l border-white/20">
+            <div className="p-12">
+              <label className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-30 mb-6 block">Subtitle</label>
+              <input 
+                 value={heroForm.subtitle}
+                 onChange={(e) => setHeroForm({...heroForm, subtitle: e.target.value})}
+                 className="bg-transparent text-3xl font-black outline-none w-full uppercase"
+              />
+            </div>
+            <div className="p-12">
+              <label className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-30 mb-6 block">Role</label>
+              <input 
+                 value={heroForm.role}
+                 onChange={(e) => setHeroForm({...heroForm, role: e.target.value})}
+                 className="bg-transparent text-3xl font-black outline-none w-full uppercase"
+              />
+            </div>
+            <div className="p-12 flex-grow bg-zinc-950">
+              <label className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-30 mb-6 block">Brief</label>
+              <textarea 
+                 value={heroForm.description}
+                 onChange={(e) => setHeroForm({...heroForm, description: e.target.value})}
+                 rows={6}
+                 className="bg-transparent text-xl font-medium leading-snug outline-none w-full resize-none"
+                 placeholder="DATA_STREAM_CONTENT"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* FOOTER */}
+        <footer className="mt-32 pt-12 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40 pb-20">
+          <div className="flex gap-12 text-[10px] font-black tracking-[0.2em]">
+            <span>STATUS / ACTIVE</span>
+            <span>VER / 2026.03</span>
+          </div>
+          <p className="text-[10px] font-black tracking-[0.8em] uppercase text-center md:text-right">MASTER_ADMIN_CORE</p>
+        </footer>
       </div>
     </div>
   );
 }
-

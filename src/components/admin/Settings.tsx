@@ -11,88 +11,132 @@ interface SettingsProps {
 
 export default function Settings({ settings, onSaveSettings, onClearCache, clearingCache }: SettingsProps) {
   return (
-    <div>
-      <h1 className="text-2xl lg:text-3xl font-bold text-white mb-6 lg:mb-8">Settings</h1>
-      
-      <div className="space-y-6">
-        {/* Site Settings */}
-        <div className="bg-black border border-white/10 rounded-2xl p-4 lg:p-6">
-          <h2 className="text-lg lg:text-xl font-semibold text-white mb-4">Site Settings</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Site Name</label>
-              <input
-                type="text"
-                value={settings.siteName}
-                onChange={(e) => onSaveSettings({ ...settings, siteName: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Site Description</label>
-              <input
-                type="text"
-                value={settings.siteDescription}
-                onChange={(e) => onSaveSettings({ ...settings, siteDescription: e.target.value })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-            </div>
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black">
+      <div className="max-w-[1600px] mx-auto px-8 py-16 lg:px-16">
+        
+        {/* HEADER */}
+        <header className="flex flex-col lg:flex-row justify-between items-end border-b border-white mb-24 pb-12 gap-8">
+          <div>
+            <h1 className="text-[18vw] lg:text-[180px] font-black leading-[0.75] tracking-tighter uppercase">
+              CONFIG
+            </h1>
+            <p className="text-[10px] font-black tracking-[0.5em] uppercase mt-6 opacity-50">
+              System / Preferences / Global Settings
+            </p>
           </div>
-        </div>
+          
+          <div className="text-right hidden lg:block">
+            <p className="text-[10px] font-black tracking-widest opacity-30 uppercase">System Status</p>
+            <p className="text-xl font-black uppercase">Active_Operational</p>
+          </div>
+        </header>
 
-        {/* Cache Settings */}
-        <div className="bg-black border border-white/10 rounded-2xl p-4 lg:p-6">
-          <h2 className="text-lg lg:text-xl font-semibold text-white mb-4">Cache Settings</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-white">Enable Cache</p>
-                <p className="text-sm text-white/50">Cache site content for faster loading</p>
+        <div className="space-y-24">
+          
+          {/* SITE SETTINGS */}
+          <section>
+            <h3 className="text-[10px] font-black tracking-[0.5em] uppercase mb-8 opacity-40 text-white">Identity_Protocol</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/20 border border-white/20">
+              <div className="bg-black p-12">
+                <label className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 mb-6 block">Site_Title</label>
+                <input
+                  type="text"
+                  value={settings.siteName}
+                  onChange={(e) => onSaveSettings({ ...settings, siteName: e.target.value.toUpperCase() })}
+                  className="bg-transparent text-3xl font-black outline-none w-full uppercase"
+                />
               </div>
-              <button
-                onClick={() => onSaveSettings({ ...settings, cacheEnabled: !settings.cacheEnabled })}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  settings.cacheEnabled ? "bg-white" : "bg-white/20"
-                }`}
-              >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform ${
-                  settings.cacheEnabled ? "translate-x-6" : "translate-x-1"
-                }`} />
-              </button>
+              <div className="bg-black p-12">
+                <label className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 mb-6 block">Meta_Description</label>
+                <input
+                  type="text"
+                  value={settings.siteDescription}
+                  onChange={(e) => onSaveSettings({ ...settings, siteDescription: e.target.value })}
+                  className="bg-transparent text-xl font-medium outline-none w-full"
+                />
+              </div>
             </div>
+          </section>
 
-            <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">Cache Duration (seconds)</label>
-              <input
-                type="number"
-                value={settings.cacheDuration}
-                onChange={(e) => onSaveSettings({ ...settings, cacheDuration: parseInt(e.target.value) || 3600 })}
-                className="w-full px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl bg-white/5 border border-white/10 focus:border-white/30 outline-none transition-all text-sm lg:text-base text-white placeholder:text-white/30"
-              />
-              <p className="text-xs text-white/30 mt-1">Default: 3600 seconds (1 hour)</p>
+          {/* CACHE SETTINGS */}
+          <section>
+            <h3 className="text-[10px] font-black tracking-[0.5em] uppercase mb-8 opacity-40 text-white">Performance_Cache</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-white/20 border border-white/20">
+              
+              {/* Toggle Section */}
+              <div className="lg:col-span-4 bg-black p-12 flex flex-col justify-between">
+                <div>
+                  <label className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 mb-6 block">State_Control</label>
+                  <p className="text-xl font-black uppercase mb-8">Caching_{settings.cacheEnabled ? "Enabled" : "Disabled"}</p>
+                </div>
+                <button
+                  onClick={() => onSaveSettings({ ...settings, cacheEnabled: !settings.cacheEnabled })}
+                  className={`h-16 w-full border border-white flex items-center justify-center transition-all duration-500 ${
+                    settings.cacheEnabled ? "bg-white text-black" : "bg-black text-white opacity-40"
+                  }`}
+                >
+                  <span className="text-xs font-black tracking-widest uppercase">
+                    {settings.cacheEnabled ? "DEACTIVATE" : "ACTIVATE"}
+                  </span>
+                </button>
+              </div>
+
+              {/* Duration Section */}
+              <div className="lg:col-span-4 bg-black p-12 border-l border-white/20">
+                <label className="text-[10px] font-black tracking-[0.4em] uppercase opacity-30 mb-6 block">TTL_Seconds</label>
+                <input
+                  type="number"
+                  value={settings.cacheDuration}
+                  onChange={(e) => onSaveSettings({ ...settings, cacheDuration: parseInt(e.target.value) || 3600 })}
+                  className="bg-transparent text-6xl font-black outline-none w-full tracking-tighter"
+                />
+                <p className="text-[10px] font-black opacity-20 mt-4 tracking-widest uppercase">Default_Value: 3600</p>
+              </div>
+
+              {/* Purge Section */}
+              <div className="lg:col-span-4 bg-zinc-950 p-12 flex flex-col justify-end">
+                <button
+                  onClick={onClearCache}
+                  disabled={clearingCache}
+                  className="h-24 w-full border border-white hover:bg-white hover:text-black transition-all duration-500 disabled:opacity-20"
+                >
+                  <span className="text-xs font-black tracking-[0.3em] uppercase">
+                    {clearingCache ? "PURGING_STREAM..." : "PURGE CACHE NOW"}
+                  </span>
+                </button>
+              </div>
             </div>
+          </section>
 
-            <button
-              onClick={onClearCache}
-              disabled={clearingCache}
-              className="w-full sm:w-auto px-4 py-2.5 lg:py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl transition-all disabled:opacity-50 text-sm lg:text-base"
-            >
-              {clearingCache ? "Clearing..." : "Clear Cache Now"}
-            </button>
-          </div>
+          {/* SYSTEM INFO / ABOUT */}
+          <section>
+            <h3 className="text-[10px] font-black tracking-[0.5em] uppercase mb-8 opacity-40 text-white">System_Manifest</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/20 border border-white/20">
+              <div className="bg-black p-10">
+                <span className="text-[10px] font-black tracking-widest opacity-30 uppercase block mb-4">Core_Version</span>
+                <span className="text-2xl font-black">1.0.0</span>
+              </div>
+              <div className="bg-black p-10">
+                <span className="text-[10px] font-black tracking-widest opacity-30 uppercase block mb-4">Architecture</span>
+                <span className="text-2xl font-black uppercase">Next.JS_V15</span>
+              </div>
+              <div className="bg-black p-10">
+                <span className="text-[10px] font-black tracking-widest opacity-30 uppercase block mb-4">Interface</span>
+                <span className="text-2xl font-black uppercase">Noir_CMS</span>
+              </div>
+            </div>
+          </section>
         </div>
 
-        {/* About */}
-        <div className="bg-black border border-white/10 rounded-2xl p-4 lg:p-6">
-          <h2 className="text-lg lg:text-xl font-semibold text-white mb-4">About</h2>
-          <div className="space-y-2 text-sm lg:text-base text-white/60">
-            <p><span className="font-medium text-white">Version:</span> 1.0.0</p>
-            <p><span className="font-medium text-white">Framework:</span> Next.js</p>
-            <p><span className="font-medium text-white">Admin Panel:</span> Custom CMS</p>
+        {/* FOOTER */}
+        <footer className="mt-32 pt-12 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40 pb-20">
+          <div className="flex gap-12 text-[10px] font-black tracking-[0.2em]">
+            <span>VER / 2026.GLOBAL</span>
+            <span>ENCRYPTION_ACTIVE</span>
           </div>
-        </div>
+          <p className="text-[10px] font-black tracking-[0.8em] uppercase text-center md:text-right">SANTOSH_ADMIN_CORE</p>
+        </footer>
       </div>
     </div>
   );
 }
-

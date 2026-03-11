@@ -2,40 +2,48 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { Project } from "@/lib/admin-types";
 
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  tech: string[];
+interface ProjectsProps {
+  projects?: Project[];
 }
 
-const projects: Project[] = [
+const defaultProjects: Project[] = [
   {
-    id: 1,
+    id: "1",
     title: "Global E-Commerce",
     category: "Full Stack Systems",
     description: "High-performance storefront with automated inventory logic and global payment routing.",
-    tech: ["Next.js", "PostgreSQL", "Stripe"]
+    tech: ["Next.js", "PostgreSQL", "Stripe"],
+    link: "#",
+    featured: true,
+    image: ""
   },
   {
-    id: 2,
+    id: "2",
     title: "SaaS Analytics Engine",
     category: "Architecture & Data",
     description: "Processing millions of data points in real-time with zero-latency visualization.",
-    tech: ["React", "Node.js", "D3.js"]
+    tech: ["React", "Node.js", "D3.js"],
+    link: "#",
+    featured: true,
+    image: ""
   },
   {
-    id: 3,
+    id: "3",
     title: "Headless CMS Framework",
     category: "CMS & Performance",
     description: "Custom-built WordPress engine optimized for sub-second page loads and enterprise SEO.",
-    tech: ["WordPress", "Next.js", "GraphQL"]
+    tech: ["WordPress", "Next.js", "GraphQL"],
+    link: "#",
+    featured: false,
+    image: ""
   }
 ];
 
-export default function Projects() {
+export default function Projects({ projects: propProjects }: ProjectsProps) {
+  const projects = propProjects || defaultProjects;
   return (
     /* Changed bg to white and text to black */
     <section className="bg-white text-black py-40 px-6 md:px-20 border-t border-black/5 selection:bg-black selection:text-white uppercase">
@@ -65,9 +73,9 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              /* Hover state now flips to black background with white text */
               className="group relative py-16 border-b border-black/10 grid grid-cols-1 lg:grid-cols-12 items-start lg:items-center hover:bg-black transition-colors duration-700 px-4 cursor-pointer"
             >
+              <Link href={project.link || "#"} className="absolute inset-0 z-0" />
               <div className="lg:col-span-7 flex flex-col z-10">
                 <span className="text-[10px] font-bold opacity-40 group-hover:text-white/60 group-hover:opacity-100 transition-colors mb-2 tracking-widest">
                   {project.category}

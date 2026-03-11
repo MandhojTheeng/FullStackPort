@@ -9,19 +9,19 @@
     "stats": [
       {
         "label": "Core Stack",
-        "value": "Node / React"
+        "value": "NODE / REACT "
       },
       {
         "label": "Cloud",
-        "value": "AWS / Docker"
+        "value": "AWS / DOCKER"
       },
       {
         "label": "Performance",
-        "value": "99+ Lighthouse"
+        "value": "99+ LIGHTHOUSE"
       },
       {
         "label": "UI/UX",
-        "value": "Framer / Figma"
+        "value": "FRAMER / FIGMA"
       }
     ],
     "ctaPrimary": "View My Work",
@@ -48,7 +48,7 @@
     ]
   },
   "about": {
-    "title": "The Architect",
+    "title": "THE ARCHITECT",
     "heading": "Santosh Timalsina is a Full Stack Developer specialized in the entire digital lifecycle—from the raw server metal to the final pixel of UI.",
     "bio": "I bridge the gap between high-level business requirements and low-level technical execution. Whether it is configuring a Linux environment, building a custom WordPress CMS, or scaling Node.js APIs, I deliver software that is as reliable as it is beautiful.",
     "image": "/santosh.jpg",
@@ -96,17 +96,17 @@
     "location": "KATHMANDU,NEPAL",
     "socialLinks": [
       {
-        "name": "GitHub",
+        "name": "GITHUB",
         "url": "https://github.com",
         "icon": "github"
       },
       {
-        "name": "LinkedIn",
+        "name": "LINKEDIN",
         "url": "https://linkedin.com",
         "icon": "linkedin"
       },
       {
-        "name": "Twitter",
+        "name": "TWITTER",
         "url": "https://twitter.com",
         "icon": "twitter"
       }
@@ -115,8 +115,9 @@
   },
   "projects": [
     {
-      "id": 1,
+      "id": "1",
       "title": "E-Commerce Platform",
+      "category": "Full Stack Systems",
       "description": "A full-featured online store with cart functionality, payment integration, and admin dashboard.",
       "tech": [
         "Next.js",
@@ -129,8 +130,9 @@
       "image": ""
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "SaaS Dashboard",
+      "category": "Architecture & Data",
       "description": "Analytics dashboard with real-time data visualization, user management, and reporting tools.",
       "tech": [
         "React",
@@ -143,8 +145,9 @@
       "image": ""
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Portfolio Generator",
+      "category": "CMS & Performance",
       "description": "Tool that helps developers create beautiful portfolio websites with customizable themes.",
       "tech": [
         "Next.js",
@@ -156,8 +159,9 @@
       "image": ""
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Task Management App",
+      "category": "Full Stack Systems",
       "description": "Collaborative project management tool with real-time updates and team workspaces.",
       "tech": [
         "React",
@@ -169,26 +173,14 @@
       "image": ""
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Weather Application",
+      "category": "Frontend Development",
       "description": "Beautiful weather app with location-based forecasts and interactive maps.",
       "tech": [
         "React",
         "OpenWeather API",
         "Leaflet"
-      ],
-      "link": "#",
-      "featured": false,
-      "image": ""
-    },
-    {
-      "id": 6,
-      "title": "Blog Platform",
-      "description": "Content management system for bloggers with markdown support and SEO optimization.",
-      "tech": [
-        "Next.js",
-        "MDX",
-        "Vercel"
       ],
       "link": "#",
       "featured": false,

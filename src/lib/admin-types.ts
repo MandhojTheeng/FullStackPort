@@ -61,7 +61,7 @@ export interface Settings {
   cacheDuration: number;
 }
 
-export type TabType = "dashboard" | "hero" | "about" | "contact" | "footer" | "settings";
+export type TabType = "dashboard" | "hero" | "about" | "contact" | "footer" | "settings" | "blog" | "projects";
 
 export interface NavItem {
   id: TabType;
@@ -72,5 +72,41 @@ export interface NavItem {
 export interface ToastMessage {
   type: "success" | "error";
   text: string;
+}
+
+// Blog Types
+export interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  category: string;
+  publishedAt: string;
+  slug: string;
+  image: string;
+  tags: string[];
+}
+
+export interface BlogContent {
+  title: string;
+  date: string;
+  category: string;
+  author: string;
+  content: string;
+}
+
+// Project Types
+export interface Project {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  tech: string[];
+  link: string;
+  featured: boolean;
+  image: string;
+}
+
+export interface ProjectsData {
+  projects: Project[];
 }
 

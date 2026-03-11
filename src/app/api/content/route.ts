@@ -10,23 +10,66 @@ import {
   containsPathTraversal,
 } from "@/lib/security";
 
-// Token store reference - imported from login route (shared in-memory)
-declare global {
-  var tokenStore: Map<string, { username: string; expiresAt: number }> | undefined;
-}
-
-// Initialize token store if not exists
-function getTokenStore(): Map<string, { username: string; expiresAt: number }> {
-  if (!global.tokenStore) {
-    global.tokenStore = new Map();
-  }
-  return global.tokenStore;
-}
-
 const dataFilePath = path.join(process.cwd(), "data", "site.json");
+const tokensFilePath = path.join(process.cwd(), "data", "tokens.json");
+
+// Token store interface
+interface TokenStore {
+  [token: string]: {
+    username: string;
+    expiresAt: number;
+  };
+}
+
+// Read tokens from file (always read fresh for serverless environments)
+function readTokens(): TokenStore {
+  try {
+    if (fs.existsSync(tokensFilePath)) {
+      const data = fs.readFileSync(tokensFilePath, "utf-8");
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error("Error reading tokens file:", error);
+  }
+  return {};
+}
+
+// Write tokens to file
+function writeTokens(tokens: TokenStore): void {
+  try {
+    fs.writeFileSync(tokensFilePath, JSON.stringify(tokens, null, 2));
+  } catch (error) {
+    console.error("Error writing tokens file:", error);
+  }
+}
+
+// Validate admin token - always read from file to ensure fresh data in serverless
+function isValidAdminToken(token: string): boolean {
+  // Always read from file to get the latest tokens in serverless environments
+  const store = readTokens();
+  const tokenData = store[token];
+  
+  if (!tokenData) {
+    // Also check for legacy tokens for backward compatibility
+    if (token === "admin-session-token" || token === "dev-admin-token-12345") {
+      return true;
+    }
+    return false;
+  }
+  
+  // Check if token is expired
+  if (Date.now() > tokenData.expiresAt) {
+    // Clean up expired token
+    delete store[token];
+    writeTokens(store);
+    return false;
+  }
+  
+  return true;
+}
 
 // Allowed sections for updates
-const ALLOWED_SECTIONS = ["hero", "about", "contact", "footer"];
+const ALLOWED_SECTIONS = ["hero", "about", "contact", "footer", "projects"];
 
 interface SiteData {
   hero: {
@@ -70,41 +113,37 @@ interface SiteData {
     brandInitials: string;
     copyright: string;
   };
+  projects: Array<{
+    id: string;
+    title: string;
+    category: string;
+    description: string;
+    tech: string[];
+    link: string;
+    featured: boolean;
+    image: string;
+  }>;
 }
 
 function readSiteData(): SiteData {
   const fileData = fs.readFileSync(dataFilePath, "utf-8");
-  return JSON.parse(fileData);
+  const data = JSON.parse(fileData);
+  
+  // Handle legacy object format for projects - convert to array if needed
+  if (data.projects && typeof data.projects === 'object' && !Array.isArray(data.projects)) {
+    data.projects = Object.values(data.projects);
+  }
+  
+  // Ensure projects is always an array
+  if (!Array.isArray(data.projects)) {
+    data.projects = [];
+  }
+  
+  return data;
 }
 
 function writeSiteData(data: SiteData): void {
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-}
-
-// Validate admin token
-function isValidAdminToken(token: string): boolean {
-  const store = getTokenStore();
-  const tokenData = store.get(token);
-  
-  if (!tokenData) {
-    // Also check for legacy token for backward compatibility
-    if (token === "admin-session-token") {
-      return true;
-    }
-    // Debug fallback token for development (remove in production)
-    if (token === "dev-admin-token-12345") {
-      return true;
-    }
-    return false;
-  }
-  
-  // Check if token is expired
-  if (Date.now() > tokenData.expiresAt) {
-    store.delete(token);
-    return false;
-  }
-  
-  return true;
 }
 
 // GET - Fetch all site content (public, but rate limited)
@@ -225,8 +264,22 @@ export async function PUT(request: NextRequest) {
 
     const currentData = readSiteData();
 
-    // Update specific section
-    (currentData as any)[section] = sanitizedData;
+    // Special handling for projects section - ensure it's always an array
+    if (section === "projects") {
+      if (Array.isArray(sectionData)) {
+        // Already an array, use it directly
+        (currentData as any)[section] = sectionData;
+      } else if (typeof sectionData === 'object' && sectionData !== null) {
+        // Convert object to array (legacy format)
+        (currentData as any)[section] = Object.values(sectionData);
+      } else {
+        // Invalid format, initialize as empty array
+        (currentData as any)[section] = [];
+      }
+    } else {
+      // Update specific section
+      (currentData as any)[section] = sanitizedData;
+    }
 
     writeSiteData(currentData);
 
